@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="376.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.ormfinalcoursework.controller.WelcomePageController">
+   <children>
+      <ImageView fx:id="imgWelcomeBackground" fitHeight="400.0" fitWidth="805.0" opacity="0.75" pickOnBounds="true">
+         <image>
+            <Image url="@../images/welcomePage.jpeg" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="rectangleUnder" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="15.0" layoutX="18.0" layoutY="377.0" stroke="BLACK" strokeType="INSIDE" width="775.0" />
+      <Rectangle fx:id="rectangleOn" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="15.0" layoutX="18.0" layoutY="377.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Label fx:id="lblLoading" layoutX="659.0" layoutY="346.0" prefHeight="20.0" prefWidth="68.0" text="Loading...">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblPercentage" layoutX="738.0" layoutY="345.0" prefHeight="18.0" prefWidth="45.0" text="2%">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
