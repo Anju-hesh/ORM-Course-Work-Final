@@ -1,10 +1,11 @@
 package lk.ijse.gdse72.ormfinalcoursework.config;
 
-import lk.ijse.gdse72.ormfinalcoursework.entity.User;
+import lk.ijse.gdse72.ormfinalcoursework.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.management.relation.Role;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -26,6 +27,11 @@ public class FactoryConfiguration {
 
             // Add all entity classes here
             configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(Patient.class);
+            configuration.addAnnotatedClass(TherapySession.class);
+            configuration.addAnnotatedClass(Therapist.class);
+            configuration.addAnnotatedClass(TherapyProgram.class);
+            configuration.addAnnotatedClass(Payment.class);
             // .addAnnotatedClass(OtherEntity.class)
 
             sessionFactory = configuration.buildSessionFactory();

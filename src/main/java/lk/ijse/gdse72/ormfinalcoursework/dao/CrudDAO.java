@@ -8,7 +8,7 @@ public interface CrudDAO<T, ID> extends SuperDAO {
     boolean save(T entity) throws Exception;
     boolean update(T entity) throws Exception;
     boolean delete(ID id) throws Exception;
-    T find(ID id) throws Exception;
-    List<T> findAll() throws Exception;
+    T search(ID id) throws Exception;
+    List<T> getAll() throws Exception;
     void setSession(Session session) throws Exception;
 }

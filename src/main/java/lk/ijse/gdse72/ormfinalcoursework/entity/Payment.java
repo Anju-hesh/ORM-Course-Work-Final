@@ -1,6 +1,8 @@
 package lk.ijse.gdse72.ormfinalcoursework.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.gdse72.ormfinalcoursework.entity.Patient;
+import lk.ijse.gdse72.ormfinalcoursework.entity.TherapyProgram;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -13,10 +15,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false, length = 20, unique = true)
     private String invoiceNumber;
@@ -36,7 +39,7 @@ public class Payment {
     private LocalDateTime paymentDate;
 
     @Column(nullable = false, length = 20)
-    private String paymentMethod; // CASH, CARD, BANK_TRANSFER
+    private String paymentMethod; // Consider using enum
 
     @Column(length = 200)
     private String remarks;

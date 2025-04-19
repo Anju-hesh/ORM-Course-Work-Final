@@ -68,16 +68,17 @@ public class SignUpFormController {
     public void initialize() {
         cmbRole.getItems().addAll("ADMIN", "RECEPTIONIST");
 
-//        String nextuserID = null;
-//        try {
-//            nextuserID = userBO.getNextuserId();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        txtUserId.setStyle("-fx-text-fill: #0b52ec;");
-//        txtUserId.setText(nextuserID);
+        String nextuserID = null;
+        try {
+            nextuserID = userBO.getNextuserId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        txtUserId.setText(nextuserID);
+
     }
 
     @FXML

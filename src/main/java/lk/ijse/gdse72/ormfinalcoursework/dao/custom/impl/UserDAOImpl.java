@@ -1,30 +1,28 @@
 package lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl;
 
+import javafx.scene.control.Alert;
 import lk.ijse.gdse72.ormfinalcoursework.config.FactoryConfiguration;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.UserDAO;
 import lk.ijse.gdse72.ormfinalcoursework.entity.User;
-import org.hibernate.HibernateException;
+import lk.ijse.gdse72.ormfinalcoursework.servise.PasswordUtil;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    private Session session;
-
-    @Override
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
     @Override
     public boolean save(User user) {
-//        return (String) session.save(user);
-        try {
-            session.save(user);
+        Transaction transaction = null;
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            transaction = session.beginTransaction();
+            session.persist(user);
+            transaction.commit();
             return true;
         } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
             e.printStackTrace();
             return false;
         }
@@ -32,58 +30,117 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean update(User user) {
-        session.update(user);
-        return true;
+        Transaction transaction = null;
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            transaction = session.beginTransaction();
+            session.merge(user);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean delete(String id) {
-        User user = session.get(User.class, id);
-        session.delete(user);
-        return true;
+        Transaction transaction = null;
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            transaction = session.beginTransaction();
+            User user = session.get(User.class, id);
+            if (user != null) {
+                session.remove(user);
+                transaction.commit();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public User find(String id) {
-        return session.get(User.class, id);
+    public User search(String id) {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            return session.get(User.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public List<User> findAll() {
-        String hql = "FROM User";
-        Query<User> query = session.createQuery(hql, User.class);
-        return query.list();
+    public List<User> getAll() {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            String hql = "FROM User";
+            Query<User> query = session.createQuery(hql, User.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void setSession(Session session) throws Exception {
+
+    }
+
+    public boolean confirmation(String userId, String password) {
+        Transaction transaction = null;
+
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            transaction = session.beginTransaction();
+
+            Query<User> query = session.createQuery("FROM User WHERE userId = :userId", User.class);
+            query.setParameter("userId", userId);
+
+            User user = query.uniqueResult();
+
+            transaction.commit();
+
+            return user != null && user.getPassword().equals(password);
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public User findByUsername(String username) {
-        String hql = "FROM User WHERE userName = :username";
-        Query<User> query = session.createQuery(hql, User.class);
-        query.setParameter("username", username);
-        return query.uniqueResult();
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            String hql = "FROM User WHERE userName = :username";
+            Query<User> query = session.createQuery(hql, User.class);
+            query.setParameter("username", username);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
+    public String getNextId() {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
 
+            Integer maxNum = (Integer) session.createQuery(
+                    "SELECT MAX(CAST(SUBSTRING(u.userId, 5) AS int)) " +
+                            "FROM User u " +
+                            "WHERE u.userId LIKE 'USER%' " +
+                            "AND LENGTH(u.userId) = 7"
+            ).uniqueResult();
 
+            // 2. Generate the next ID
+            return maxNum != null ?
+                    String.format("USER%03d", maxNum + 1) :
+                    "USER001";
 
-//    public String getNextId() throws HibernateException {
-//        String hql = "SELECT u.userId FROM User u ORDER BY u.userId DESC";
-//
-//        // Use the passed session instead of creating a new one
-//        Query<String> query = session.createQuery(hql, String.class);
-//        query.setMaxResults(1);
-//        List<String> result = query.list();
-//
-//        if (result.isEmpty()) {
-//            return "USER - 001"; // If no entries exist, return the first ID
-//        }
-//
-//        String lastUserId = result.get(0); // Retrieve the last UserId, e.g., "USER - 001"
-//        String subUserId = lastUserId.substring(7); // Extract the numerical part
-//        int lastIdIndex = Integer.parseInt(subUserId); // Convert to int
-//        int nextIndex = lastIdIndex + 1; // Increment the index
-//        return String.format("USER - %03d", nextIndex); // Generate the new ID in the format USER - 002
-//    }
-
-
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate next ID", e);
+        }
+    }
 }
