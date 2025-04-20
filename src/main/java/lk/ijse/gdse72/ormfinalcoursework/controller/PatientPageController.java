@@ -119,6 +119,10 @@ public class PatientPageController {
             refrashPage();
             loadTableData();
             visibleData();
+
+            String nextPatientId = PATIENTBO.getNextPatientId();
+            txtPatientId.setText(nextPatientId);
+
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Fail to load Page: " + e.getMessage()).show();
         }
@@ -145,7 +149,7 @@ public class PatientPageController {
     @FXML
     void clearFilterOnAction(ActionEvent event) {
         try {
-            cmbFilterTherapy.setValue("All");
+            cmbFilterTherapy.setValue(null);
             refrashPage();
             loadTableData();
             visibleData();
@@ -165,7 +169,9 @@ public class PatientPageController {
     }
 
     public void refrashPage() throws Exception {
-        txtPatientId.setText("");
+
+        String nextPatientId = PATIENTBO.getNextPatientId();
+        txtPatientId.setText(nextPatientId);
         txtFirstName.setText("");
         txtLastName.setText("");
         txtAge.setText("");
@@ -427,7 +433,7 @@ public class PatientPageController {
                     new Alert(Alert.AlertType.WARNING, "Patient Not Found!").show();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "An error occurred while searching!").show();
             }
         } else {

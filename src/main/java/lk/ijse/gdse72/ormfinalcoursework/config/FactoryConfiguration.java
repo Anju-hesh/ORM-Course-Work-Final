@@ -28,9 +28,9 @@ public class FactoryConfiguration {
             // Add all entity classes here
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(Patient.class);
-            configuration.addAnnotatedClass(TherapySession.class);
             configuration.addAnnotatedClass(Therapist.class);
             configuration.addAnnotatedClass(TherapyProgram.class);
+            configuration.addAnnotatedClass(TherapySession.class);
             configuration.addAnnotatedClass(Payment.class);
             // .addAnnotatedClass(OtherEntity.class)
 

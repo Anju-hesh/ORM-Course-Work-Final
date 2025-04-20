@@ -1,8 +1,6 @@
 package lk.ijse.gdse72.ormfinalcoursework.entity;
 
 import jakarta.persistence.*;
-import lk.ijse.gdse72.ormfinalcoursework.entity.Patient;
-import lk.ijse.gdse72.ormfinalcoursework.entity.TherapyProgram;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -18,7 +16,8 @@ import java.time.LocalDateTime;
 
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payment_id" , length=10)
     private String id;
 
     @Column(nullable = false, length = 20, unique = true)
@@ -39,7 +38,7 @@ public class Payment {
     private LocalDateTime paymentDate;
 
     @Column(nullable = false, length = 20)
-    private String paymentMethod; // Consider using enum
+    private String paymentMethod;
 
     @Column(length = 200)
     private String remarks;

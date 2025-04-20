@@ -64,7 +64,7 @@ public class WelcomePageController extends Application implements Initializable 
             Scene scene = new Scene(root);
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons/icon-TaskBar.png")));
             stage.setScene(scene);
-            stage.setTitle("Apex Building Solution");
+            stage.setTitle("Seranity Medical Health Care");
             //    stage.initStyle(StageStyle.DECORATED);
             stage.show();
         } catch (IOException e) {

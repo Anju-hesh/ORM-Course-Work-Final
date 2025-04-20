@@ -112,6 +112,26 @@ public class PatientDAOImpl implements PatientDAO {
     @Override
     public void setSession(Session session) throws Exception {}
 
+    @Override
+    public String getNextId() {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+
+            Integer maxNum = (Integer) session.createQuery(
+                    "SELECT MAX(CAST(SUBSTRING(p.id, 5) AS int)) " +
+                            "FROM Patient p " +
+                            "WHERE p.id LIKE 'PAT%' " +
+                            "AND LENGTH(p.id) = 6"
+            ).uniqueResult();
+
+            return maxNum != null ?
+                    String.format("PAT%03d", maxNum + 1) :
+                    "PAT001";
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate next ID", e);
+        }
+    }
+
     /*
     public List<Patient> getPatientsByTherapyType(String therapyType) throws Exception {
         Session session = FactoryConfiguration.getInstance().getSession();

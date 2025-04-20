@@ -96,6 +96,11 @@ public class PatientBOImpl implements PatientBO {
         return patientDAO.delete(patientID);
     }
 
+    @Override
+    public String getNextPatientId() throws Exception {
+        return patientDAO.getNextId();
+    }
+
     // You could add a method to filter patients by therapy type if needed
     /*
     @Override
