@@ -7,6 +7,6 @@ import lk.ijse.gdse72.ormfinalcoursework.entity.Patient;
 public interface PatientDAO extends CrudDAO<Patient , String> {
     String getNextId();
 
-    PatientDTO getPatient() ;
+    PatientDTO getPatient(String patientId) ;
 
 }

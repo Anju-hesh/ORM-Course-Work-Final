@@ -218,8 +218,9 @@ public class TherapySessionPageController {
     @FXML
     void loadPatientOnAction(ActionEvent event) {
         try {
+
             PatientDAO patientDAO = new PatientDAOImpl();
-            PatientDTO patient = patientDAO.getPatient();
+            PatientDTO patient = patientDAO.getPatient(txtPatientId.getText());
             if (patient != null) {
                 txtPatientId.setText(patient.getPatientId());
                 txtPatientName.setText(patient.getFirstName() + " " + patient.getLastName());

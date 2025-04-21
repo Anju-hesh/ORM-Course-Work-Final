@@ -2,7 +2,10 @@ package lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl;
 
 import lk.ijse.gdse72.ormfinalcoursework.config.FactoryConfiguration;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapySessionDAO;
+import lk.ijse.gdse72.ormfinalcoursework.dto.PatientDTO;
 import lk.ijse.gdse72.ormfinalcoursework.dto.TherapistAvailabilityDTO;
+import lk.ijse.gdse72.ormfinalcoursework.dto.TherapySessionDTO;
+import lk.ijse.gdse72.ormfinalcoursework.entity.Patient;
 import lk.ijse.gdse72.ormfinalcoursework.entity.TherapySession;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -151,6 +154,46 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
         }
 
         return false;
+    }
+
+    @Override
+    public TherapySessionDTO getSession(String sessionId) throws SQLException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try{
+//            TherapySession therapySession = session.createQuery("FROM TherapySession ORDER BY sessionId DESC", TherapySession.class)
+//                    .setMaxResults(1)
+//                    .uniqueResult();
+
+            TherapySession therapySession = session.createQuery(
+                            "FROM TherapySession WHERE sessionId = :sessionId", TherapySession.class)
+                    .setParameter("sessionId", sessionId)
+                    .uniqueResult();
+
+            transaction.commit();
+            session.close();
+
+            if (therapySession != null) {
+                return new TherapySessionDTO(
+                        therapySession.getSessionId(),
+                        therapySession.getPatientId(),
+                        therapySession.getPatientName(),
+                        therapySession.getTherapistId(),
+                        therapySession.getProgram(),
+                        therapySession.getSessionDate(),
+                        therapySession.getTime(),
+                        therapySession.getDuration(),
+                        therapySession.getStatus()
+                );
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            transaction.rollback();
+            session.close();
+            throw e;
+        }
     }
 
     private boolean isTimeInRange(LocalTime time, LocalTime start, LocalTime end) {

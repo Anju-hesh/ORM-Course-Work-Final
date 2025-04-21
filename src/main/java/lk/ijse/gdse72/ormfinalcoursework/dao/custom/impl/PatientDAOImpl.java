@@ -134,14 +134,20 @@ public class PatientDAOImpl implements PatientDAO {
     }
 
     @Override
-    public PatientDTO getPatient(){
+    public PatientDTO getPatient(String patientId){
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
 
         try {
 
-            Patient patient = session.createQuery("FROM Patient ORDER BY id DESC", Patient.class)
-                    .setMaxResults(1)
+//            Patient patient = session.createQuery("FROM Patient ORDER BY id DESC", Patient.class)
+//                    .setMaxResults(1)
+//                    .uniqueResult();
+
+
+            Patient patient = session.createQuery(
+                            "FROM Patient WHERE id = :patientId", Patient.class)
+                    .setParameter("patientId", patientId)
                     .uniqueResult();
 
             transaction.commit();

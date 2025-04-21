@@ -74,17 +74,12 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="550.0" layoutY="220.0" prefHeight="30.0" prefWidth="150.0" text="Invoice No :">
+        <Label layoutX="550.0" layoutY="220.0" prefHeight="30.0" prefWidth="150.0" text="Payed Amound :">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
         <Label layoutX="550.0" layoutY="270.0" prefHeight="30.0" prefWidth="150.0" text="Balance Due :">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-        <Label layoutX="550.0" layoutY="320.0" prefHeight="30.0" prefWidth="150.0" text="Notes :">
             <font>
                 <Font size="18.0" />
             </font>
@@ -101,9 +96,8 @@
                 </FXCollections>
             </items>
         </JFXComboBox>
-        <JFXTextField fx:id="txtInvoiceNo" layoutX="700.0" layoutY="220.0" prefHeight="30.0" prefWidth="214.0" />
-        <JFXTextField fx:id="txtBalance" editable="false" layoutX="700.0" layoutY="270.0" prefHeight="30.0" prefWidth="214.0" />
-        <JFXTextField fx:id="txtNotes" layoutX="700.0" layoutY="320.0" prefHeight="30.0" prefWidth="274.0" />
+        <JFXTextField fx:id="txtPayedAmmount" layoutX="700.0" layoutY="220.0" onAction="#calOnAction" prefHeight="30.0" prefWidth="214.0" />
+        <JFXTextField fx:id="txtBalance" editable="false" layoutX="709.0" layoutY="270.0" prefHeight="30.0" prefWidth="214.0" />
 
         <!-- Action Buttons -->
         <JFXButton fx:id="btnProcess" layoutX="62.0" layoutY="380.0" onAction="#processPaymentOnAction" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: black; -fx-border-radius: 20;" text="Process Payment" textFill="WHITE">
@@ -116,7 +110,7 @@
                 <Font name="System Bold Italic" size="16.0" />
             </font>
         </JFXButton>
-        <JFXButton fx:id="btnPrint" layoutX="443.0" layoutY="380.0" onAction="#printInvoiceOnAction" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: black; -fx-border-radius: 20;" text="Print Invoice" textFill="WHITE">
+        <JFXButton fx:id="btnCanselPayment" layoutX="443.0" layoutY="380.0" onAction="#canselPaymentOnAction" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: black; -fx-border-radius: 20;" text="Cansel Payment" textFill="WHITE">
             <font>
                 <Font name="System Bold Italic" size="16.0" />
             </font>
@@ -145,11 +139,10 @@
                 <TableColumn fx:id="colPatientName" prefWidth="120" text="Patient" />
                 <TableColumn fx:id="colAmount" prefWidth="80" text="Amount" />
                 <TableColumn fx:id="colMethod" prefWidth="100" text="Method" />
-                <TableColumn fx:id="colDate" prefWidth="100" text="Date" />
-                <TableColumn fx:id="colStatus" prefWidth="80" text="Status" />
-                <TableColumn fx:id="colInvoiceNo" prefWidth="100" text="Invoice No" />
-                <TableColumn fx:id="colBalance" prefWidth="80" text="Balance" />
-                <TableColumn fx:id="colAction" prefWidth="136" text="Action" />
+                <TableColumn fx:id="colDate" prefWidth="145.5999755859375" text="Date" />
+                <TableColumn fx:id="colStatus" prefWidth="109.5999755859375" text="Status" />
+                <TableColumn fx:id="colPayedAmount" prefWidth="120.0" text="Payed Amount" />
+                <TableColumn fx:id="colBalance" prefWidth="117.60009765625" text="Balance" />
             </columns>
         </TableView>
     </children>

@@ -1,4 +1,8 @@
 package lk.ijse.gdse72.ormfinalcoursework.dao.custom;
 
-public interface PaymentDAO {
+import lk.ijse.gdse72.ormfinalcoursework.dao.CrudDAO;
+import lk.ijse.gdse72.ormfinalcoursework.entity.Payment;
+
+public interface PaymentDAO extends CrudDAO<Payment , String> {
+    String getNextPaymentId() throws Exception;
 }
