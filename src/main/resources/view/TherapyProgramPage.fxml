@@ -29,7 +29,7 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="62.0" layoutY="245.0" prefHeight="30.0" prefWidth="150.0" text="Duration (weeks) :">
+        <Label layoutX="62.0" layoutY="245.0" prefHeight="30.0" prefWidth="150.0" text="Duration (Munits) :">
             <font>
                 <Font size="18.0" />
             </font>

@@ -31,6 +31,9 @@ public class ReceptionDashboardController {
     private Button btnTherapiSession;
 
     @FXML
+    private Button btnTherapistAvailability;
+
+    @FXML
     private Button btnTherapyProgram;
 
     @FXML
@@ -49,6 +52,10 @@ public class ReceptionDashboardController {
         navigateToPage("/view/PaymentPage.fxml");
     }
 
+    @FXML
+    void therapistAvailabilityOnAction(ActionEvent event) {
+        navigateToPage("/view/TherapistAvailabilty.fxml");
+    }
     @FXML
     void reportOnAction(ActionEvent event) {
 

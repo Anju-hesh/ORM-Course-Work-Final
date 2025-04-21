@@ -63,17 +63,12 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="550.0" layoutY="220.0" prefHeight="30.0" prefWidth="150.0" text="Duration :">
+        <Label layoutX="550.0" layoutY="220.0" prefHeight="30.0" prefWidth="150.0" text="Duration (Munits) :">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
         <Label layoutX="550.0" layoutY="270.0" prefHeight="30.0" prefWidth="150.0" text="Status :">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-        <Label layoutX="550.0" layoutY="320.0" prefHeight="30.0" prefWidth="150.0" text="Notes :">
             <font>
                 <Font size="18.0" />
             </font>
@@ -85,9 +80,8 @@
         <!-- Using ComboBox for time selection instead of JFXTimePicker -->
         <ComboBox fx:id="timeComboBox" layoutX="700.0" layoutY="170.0" prefHeight="30.0" prefWidth="214.0" />
 
-        <JFXComboBox fx:id="cmbDuration" layoutX="700.0" layoutY="220.0" prefHeight="30.0" prefWidth="214.0" />
+        <JFXComboBox fx:id="cmbDuration" layoutX="720.0" layoutY="220.0" prefHeight="30.0" prefWidth="214.0" />
         <JFXComboBox fx:id="cmbStatus" layoutX="700.0" layoutY="270.0" prefHeight="30.0" prefWidth="214.0" />
-        <JFXTextField fx:id="txtNotes" layoutX="700.0" layoutY="320.0" prefHeight="30.0" prefWidth="274.0" />
 
         <!-- Action Buttons -->
         <JFXButton fx:id="btnBook" layoutX="62.0" layoutY="380.0" onAction="#bookOnAction" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: black; -fx-border-radius: 20;" text="Book" textFill="WHITE">

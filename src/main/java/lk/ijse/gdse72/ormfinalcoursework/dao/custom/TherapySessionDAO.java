@@ -1,4 +1,14 @@
 package lk.ijse.gdse72.ormfinalcoursework.dao.custom;
 
-public interface TherapySessionDAO {
+import lk.ijse.gdse72.ormfinalcoursework.dao.CrudDAO;
+import lk.ijse.gdse72.ormfinalcoursework.entity.TherapySession;
+
+import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public interface TherapySessionDAO extends CrudDAO<TherapySession , String> {
+    String getNextID() throws SQLException;
+    boolean isTherapistAvailable(String therapistId, LocalDate date, LocalTime time) throws SQLException;
 }

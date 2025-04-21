@@ -43,7 +43,7 @@ public class TherapistDAOImpl implements TherapistDAO {
         try {
             transaction = session.beginTransaction();
 
-            Query<String> query = session.createQuery("SELECT t.therapistId FROM Therapist t", String.class);
+            Query<String> query = session.createQuery("SELECT t.name FROM Therapist t", String.class);
             therapistIds = (ArrayList<String>) query.getResultList();
 
             transaction.commit();
@@ -152,7 +152,8 @@ public class TherapistDAOImpl implements TherapistDAO {
             if (session != null) {
                 session.close();
             }
-        }    }
+        }
+    }
 
     @Override
     public void setSession(Session session) throws Exception {

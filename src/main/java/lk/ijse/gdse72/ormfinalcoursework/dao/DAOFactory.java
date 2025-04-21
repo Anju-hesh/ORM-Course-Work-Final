@@ -18,6 +18,7 @@ public class DAOFactory {
         PATIENT,
         PAYMENT,
         THERAPIST,
+        AVAILABILITY,
         THERAPY_PROGRAM,
         THERAPY_SESSION,
         USER
@@ -29,6 +30,7 @@ public class DAOFactory {
             case PATIENT -> (T) new PatientDAOImpl();
             case PAYMENT -> (T) new PaymentDAOImpl();
             case THERAPIST -> (T) new TherapistDAOImpl();
+            case AVAILABILITY -> (T) new TherapistAvailabilityDAOImpl();
             case THERAPY_PROGRAM -> (T) new TherapyProgramDAOImpl();
             case THERAPY_SESSION -> (T) new TherapySessionDAOImpl();
             case USER -> (T) new UserDAOImpl();

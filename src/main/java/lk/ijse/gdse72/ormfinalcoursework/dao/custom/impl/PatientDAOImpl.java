@@ -2,6 +2,7 @@ package lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl;
 
 import lk.ijse.gdse72.ormfinalcoursework.config.FactoryConfiguration;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.PatientDAO;
+import lk.ijse.gdse72.ormfinalcoursework.dto.PatientDTO;
 import lk.ijse.gdse72.ormfinalcoursework.entity.Patient;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -129,6 +130,45 @@ public class PatientDAOImpl implements PatientDAO {
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate next ID", e);
+        }
+    }
+
+    @Override
+    public PatientDTO getPatient(){
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+
+            Patient patient = session.createQuery("FROM Patient ORDER BY id DESC", Patient.class)
+                    .setMaxResults(1)
+                    .uniqueResult();
+
+            transaction.commit();
+            session.close();
+
+            if (patient != null) {
+                return new PatientDTO(
+                        patient.getId(),
+                        patient.getFirstName(),
+                        patient.getLastName(),
+                        patient.getAge(),
+                        patient.getGender(),
+                        patient.getMedicalHistory(),
+                        patient.getContactNumber(),
+                        patient.getEmail(),
+                        patient.getAddress(),
+                        patient.getBloodGroup(),
+                        patient.getAllergies()
+                );
+            } else {
+                return null;
+            }
+
+        } catch (Exception e) {
+            transaction.rollback();
+            session.close();
+            throw e;
         }
     }
 

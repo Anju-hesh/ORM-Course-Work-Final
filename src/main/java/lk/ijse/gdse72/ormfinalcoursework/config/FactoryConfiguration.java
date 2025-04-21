@@ -32,6 +32,7 @@ public class FactoryConfiguration {
             configuration.addAnnotatedClass(TherapyProgram.class);
             configuration.addAnnotatedClass(TherapySession.class);
             configuration.addAnnotatedClass(Payment.class);
+            configuration.addAnnotatedClass(TherapistAvailability.class);
             // .addAnnotatedClass(OtherEntity.class)
 
             sessionFactory = configuration.buildSessionFactory();

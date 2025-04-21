@@ -49,6 +49,9 @@ public class Therapist {
     @OneToMany(mappedBy = "therapist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TherapySession> therapySessions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "therapist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TherapistAvailability> availabilities = new ArrayList<>();
+
     public Therapist(String therapistId, String therapistName, String specialization, String availability, int contact, String program, String mail) {
         this.therapistId = therapistId;
         this.name = therapistName;

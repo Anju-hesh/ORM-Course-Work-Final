@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TherapyProgramDAOImpl implements TherapyProgramDAO {
@@ -29,6 +30,29 @@ public class TherapyProgramDAOImpl implements TherapyProgramDAO {
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate next ID", e);
         }
+    }
+
+    @Override
+    public ArrayList<String> getPrograms() throws SQLException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
+        ArrayList<String> therapyProgram = new ArrayList<>();
+
+        try {
+            transaction = session.beginTransaction();
+
+            Query<String> query = session.createQuery("SELECT tp.name FROM TherapyProgram tp", String.class);
+            therapyProgram = (ArrayList<String>) query.getResultList();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return therapyProgram;
     }
 
     @Override

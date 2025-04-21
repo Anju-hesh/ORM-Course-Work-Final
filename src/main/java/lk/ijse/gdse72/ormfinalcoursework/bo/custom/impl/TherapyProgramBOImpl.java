@@ -31,7 +31,8 @@ public class TherapyProgramBOImpl implements TherapyProgramBO {
                     therapyProgram.getName(),
                     therapyProgram.getDuration(),
                     therapyProgram.getFee(),
-                    therapyProgram.getTherapist(),therapyProgram.getDescription()
+                    therapyProgram.getTherapist(),
+                    therapyProgram.getDescription()
             ));
         }
         return therapyProgramDTOS;

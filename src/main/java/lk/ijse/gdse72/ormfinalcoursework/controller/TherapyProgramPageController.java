@@ -218,8 +218,9 @@ public class TherapyProgramPageController {
                         programName,
                         duration,
                         fee,
-                        description,
-                        therapistId
+                        therapistId,
+                        description
+
                 );
 
                 boolean isSaved = THERAPYPROGRAMBO.saveTherapyProgram(therapyProgramDTO);
@@ -297,8 +298,8 @@ public class TherapyProgramPageController {
                         programName,
                         duration,
                         fee,
-                        description,
-                        therapistId
+                        therapistId,
+                        description
                 );
 
                 boolean isUpdated = THERAPYPROGRAMBO.updateTherapyProgram(therapyProgramDTO);

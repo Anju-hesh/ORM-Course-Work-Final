@@ -102,4 +102,7 @@ public class OwnerDashboardController {
         rightPane.getChildren().clear();
     }
 
+    public void therapistAvailabilityOnAction(ActionEvent actionEvent) {
+        navigateToPage("/view/TherapistAvailabilty.fxml");
+    }
 }

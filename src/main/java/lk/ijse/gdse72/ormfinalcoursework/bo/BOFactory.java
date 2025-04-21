@@ -1,11 +1,7 @@
 package lk.ijse.gdse72.ormfinalcoursework.bo;
 
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.PatientBOImpl;
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.PaymentBOImpl;
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.TherapistBOImpl;
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.TherapyProgramBOImpl;
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.TherapySessionBOImpl;
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.UserBOImpl;
+import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapistAvailabilityBO;
+import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.*;
 
 public class BOFactory {
     private static BOFactory boFactory;
@@ -20,6 +16,7 @@ public class BOFactory {
         PATIENT,
         PAYMENT,
         THERAPIST,
+        AVAILABILITY,
         THERAPY_PROGRAM,
         THERAPY_SESSION,
         USER
@@ -33,6 +30,8 @@ public class BOFactory {
                 return new PaymentBOImpl();
             case THERAPIST:
                 return new TherapistBOImpl();
+            case AVAILABILITY:
+                return new TherapistAvailabilityBOImpl();
             case THERAPY_PROGRAM:
                 return new TherapyProgramBOImpl();
             case THERAPY_SESSION:

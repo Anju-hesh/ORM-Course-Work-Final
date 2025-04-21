@@ -193,6 +193,7 @@ public class TherapistPageController {
     void deleteOnAction(ActionEvent event) {
 
         TherapistTM selectedTherapist = tblTherapists.getSelectionModel().getSelectedItem();
+
         if (selectedTherapist != null) {
             Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmAlert.setTitle("Confirm Deletion");

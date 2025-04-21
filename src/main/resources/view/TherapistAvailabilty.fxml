@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #D3D3D3; -fx-border-radius: 20; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.ormfinalcoursework.controller.TherapistAvailabilityController">
+
+    <children>
+
+        <!-- Header -->
+        <Label alignment="CENTER" layoutX="120.0" layoutY="20.0" prefWidth="460.0" text="Therapist Availability Schedule">
+            <font>
+                <Font name="Bell MT" size="26.0" />
+            </font>
+        </Label>
+
+        <!-- Form Fields -->
+        <Label layoutX="50.0" layoutY="90.0" text="Therapist :">
+            <font><Font size="16.0" /></font>
+        </Label>
+        <JFXComboBox fx:id="cmbTherapistId" layoutX="180.0" layoutY="85.0" prefWidth="400.0" />
+
+        <Label layoutX="50.0" layoutY="140.0" text="Available Date:">
+            <font><Font size="16.0" /></font>
+        </Label>
+        <DatePicker fx:id="datePicker" layoutX="180.0" layoutY="135.0" prefWidth="400.0" />
+
+        <Label layoutX="50.0" layoutY="190.0" text="Start Time:">
+            <font><Font size="16.0" /></font>
+        </Label>
+        <JFXComboBox fx:id="cmbStartTime" layoutX="180.0" layoutY="185.0" prefWidth="180.0" />
+
+        <Label layoutX="370.0" layoutY="190.0" text="End Time:">
+            <font><Font size="16.0" /></font>
+        </Label>
+        <JFXComboBox fx:id="cmbEndTime" layoutX="440.0" layoutY="185.0" prefWidth="140.0" />
+
+        <!-- Save Button -->
+        <JFXButton fx:id="btnSave" layoutX="75.0" layoutY="237.0" onAction="#onSaveAvailability" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Save Availability" textFill="WHITE">
+            <font><Font name="System Bold Italic" size="16.0" /></font>
+        </JFXButton>
+
+        <!-- Table of Availabilities -->
+        <TableView fx:id="tblAvailability" layoutX="30.0" layoutY="310.0" onMouseClicked="#tblAvailabilityClickOnAction" prefHeight="250.0" prefWidth="640.0">
+            <columns>
+                <TableColumn fx:id="colTherapistId" prefWidth="150.0" text="Therapist ID" />
+                <TableColumn fx:id="colDate" prefWidth="150.0" text="Date" />
+                <TableColumn fx:id="colStartTime" prefWidth="170.0" text="Start Time" />
+                <TableColumn fx:id="colEndTime" prefWidth="170.0" text="End Time" />
+            </columns>
+        </TableView>
+      <JFXButton fx:id="btnCansel" layoutX="455.0" layoutY="237.0" onAction="#canselOnAction" prefHeight="40.0" prefWidth="194.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Cansel Availability" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </JFXButton>
+
+    </children>
+</AnchorPane>
