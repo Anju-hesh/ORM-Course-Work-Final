@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class PaymentPageController {
@@ -126,4 +127,7 @@ public class PaymentPageController {
 
     }
 
+    public void tblPaymentClickOnAction(MouseEvent mouseEvent) {
+
+    }
 }

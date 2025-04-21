@@ -3,14 +3,14 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import javafx.scene.control.DatePicker?>
 
 <AnchorPane fx:id="paymentAnchor" prefHeight="816.0" prefWidth="1080.0" style="-fx-background-color: gray; -fx-border-radius: 50;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.ormfinalcoursework.controller.PaymentPageController">
     <children>
@@ -49,7 +49,7 @@
 
         <JFXTextField fx:id="txtPaymentId" layoutX="220.0" layoutY="120.0" prefHeight="30.0" prefWidth="189.0" />
         <JFXTextField fx:id="txtSessionId" layoutX="220.0" layoutY="170.0" prefHeight="30.0" prefWidth="189.0" />
-        <JFXTextField fx:id="txtPatientName" layoutX="220.0" layoutY="220.0" prefHeight="30.0" prefWidth="274.0" editable="false" />
+        <JFXTextField fx:id="txtPatientName" editable="false" layoutX="220.0" layoutY="220.0" prefHeight="30.0" prefWidth="274.0" />
         <JFXTextField fx:id="txtAmount" layoutX="220.0" layoutY="270.0" prefHeight="30.0" prefWidth="274.0" />
         <JFXComboBox fx:id="cmbPaymentMethod" layoutX="220.0" layoutY="320.0" prefHeight="30.0" prefWidth="274.0">
             <items>
@@ -102,7 +102,7 @@
             </items>
         </JFXComboBox>
         <JFXTextField fx:id="txtInvoiceNo" layoutX="700.0" layoutY="220.0" prefHeight="30.0" prefWidth="214.0" />
-        <JFXTextField fx:id="txtBalance" layoutX="700.0" layoutY="270.0" prefHeight="30.0" prefWidth="214.0" editable="false" />
+        <JFXTextField fx:id="txtBalance" editable="false" layoutX="700.0" layoutY="270.0" prefHeight="30.0" prefWidth="214.0" />
         <JFXTextField fx:id="txtNotes" layoutX="700.0" layoutY="320.0" prefHeight="30.0" prefWidth="274.0" />
 
         <!-- Action Buttons -->
@@ -138,7 +138,7 @@
         </JFXButton>
 
         <!-- Payment Records Table -->
-        <TableView fx:id="tblPayments" layoutX="62.0" layoutY="440.0" prefHeight="340.0" prefWidth="956.0">
+        <TableView fx:id="tblPayments" layoutX="62.0" layoutY="440.0" onMouseClicked="#tblPaymentClickOnAction" prefHeight="340.0" prefWidth="956.0">
             <columns>
                 <TableColumn fx:id="colPaymentId" prefWidth="80" text="Payment ID" />
                 <TableColumn fx:id="colSessionId" prefWidth="80" text="Session ID" />

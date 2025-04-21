@@ -8,6 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TherapistDAOImpl implements TherapistDAO {
@@ -30,6 +32,29 @@ public class TherapistDAOImpl implements TherapistDAO {
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate next ID", e);
         }
+    }
+
+    @Override
+    public ArrayList<String> getTherapist() throws SQLException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
+        ArrayList<String> therapistIds = new ArrayList<>();
+
+        try {
+            transaction = session.beginTransaction();
+
+            Query<String> query = session.createQuery("SELECT t.therapistId FROM Therapist t", String.class);
+            therapistIds = (ArrayList<String>) query.getResultList();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return therapistIds;
     }
 
     @Override

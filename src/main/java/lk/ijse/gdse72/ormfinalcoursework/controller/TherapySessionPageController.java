@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class TherapySessionPageController {
@@ -132,4 +133,7 @@ public class TherapySessionPageController {
 
     }
 
+    public void tblTherapySessionClickOnAction(MouseEvent mouseEvent) {
+
+    }
 }

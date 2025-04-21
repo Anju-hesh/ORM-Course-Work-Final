@@ -127,17 +127,16 @@
         </JFXButton>
 
         <!-- Session Table -->
-        <TableView fx:id="tblSessions" layoutX="62.0" layoutY="440.0" prefHeight="340.0" prefWidth="956.0">
+        <TableView fx:id="tblSessions" layoutX="62.0" layoutY="440.0" onMouseClicked="#tblTherapySessionClickOnAction" prefHeight="340.0" prefWidth="956.0">
             <columns>
                 <TableColumn fx:id="colSessionId" prefWidth="80" text="Session ID" />
-                <TableColumn fx:id="colPatientName" prefWidth="120" text="Patient" />
+                <TableColumn fx:id="colPatientName" prefWidth="120" text="Patient Name" />
                 <TableColumn fx:id="colTherapist" prefWidth="120" text="Therapist" />
                 <TableColumn fx:id="colProgram" prefWidth="130" text="Program" />
                 <TableColumn fx:id="colDate" prefWidth="100" text="Date" />
-                <TableColumn fx:id="colTime" prefWidth="80" text="Time" />
-                <TableColumn fx:id="colDuration" prefWidth="80" text="Duration" />
-                <TableColumn fx:id="colStatus" prefWidth="100" text="Status" />
-                <TableColumn fx:id="colAction" prefWidth="146" text="Action" />
+                <TableColumn fx:id="colTime" prefWidth="108.0" text="Time" />
+                <TableColumn fx:id="colDuration" prefWidth="122.4000244140625" text="Duration" />
+                <TableColumn fx:id="colStatus" prefWidth="173.59991455078125" text="Status" />
             </columns>
         </TableView>
     </children>
