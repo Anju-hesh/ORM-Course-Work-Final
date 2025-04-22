@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -71,6 +72,8 @@ public class SignUpFormController {
         String nextuserID = null;
         try {
             nextuserID = userBO.getNextuserId();
+            changeFocus();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -79,6 +82,33 @@ public class SignUpFormController {
 
         txtUserId.setText(nextuserID);
 
+    }
+
+    public void changeFocus() {
+
+        txtUserName.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtPassword.requestFocus();
+            }
+        });
+
+        txtPassword.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtConfirmPassword.requestFocus();
+            }
+        });
+
+        txtConfirmPassword.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbRole.requestFocus();
+            }
+        });
+
+        cmbRole.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                btnSignUp.fire();
+            }
+        });
     }
 
     @FXML

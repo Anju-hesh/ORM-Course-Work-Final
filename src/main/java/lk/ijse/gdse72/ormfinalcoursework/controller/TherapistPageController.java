@@ -12,6 +12,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
@@ -94,6 +95,7 @@ public class TherapistPageController {
             refrashPage();
             loadTableData();
             visibleData();
+            changeFocus();
 
             String nextTherapistId = therapistBO.getNextTherapistId();
             txtTherapistId.setText(nextTherapistId);
@@ -101,6 +103,51 @@ public class TherapistPageController {
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Id Genaration Failed: " + e.getMessage()).show();
         }
+    }
+
+    public void changeFocus() {
+
+        txtTherapistId.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtTherapistName.requestFocus();
+            }
+        });
+
+        txtTherapistName.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbSpecialization.requestFocus();
+            }
+        });
+
+        cmbSpecialization.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbAvailability.requestFocus();
+            }
+        });
+
+        cmbAvailability.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtContact.requestFocus();
+            }
+        });
+
+        txtContact.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbPrograms.requestFocus();
+            }
+        });
+
+        cmbPrograms.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtEmail.requestFocus();
+            }
+        });
+
+        txtEmail.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                btnSave.fire();
+            }
+        });
     }
 
     public void refrashPage() {
@@ -342,5 +389,9 @@ public class TherapistPageController {
             txtContact.setText(String.valueOf(selectedTherapist.getContact()));
             txtEmail.setText(selectedTherapist.getMail());
         }
+    }
+
+    public void enterOnAction(ActionEvent actionEvent) {
+        searchOnAction(actionEvent);
     }
 }

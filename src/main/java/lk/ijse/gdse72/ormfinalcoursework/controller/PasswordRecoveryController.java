@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -65,6 +66,25 @@ public class PasswordRecoveryController {
 
     @FXML
     private JFXTextField txtUserName;
+
+    public void initialize() {
+        changeFocus();
+    }
+
+    public void changeFocus() {
+
+        txtUserName.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtEmail.requestFocus();
+            }
+        });
+
+        txtEmail.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                btnSendCode.fire();
+            }
+        });
+    }
 
     @FXML
     void backOnAction(MouseEvent event) {

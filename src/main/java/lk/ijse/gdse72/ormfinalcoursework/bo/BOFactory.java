@@ -1,6 +1,5 @@
 package lk.ijse.gdse72.ormfinalcoursework.bo;
 
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapistAvailabilityBO;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl.*;
 
 public class BOFactory {

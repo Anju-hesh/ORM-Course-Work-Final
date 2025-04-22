@@ -1,4 +1,5 @@
 module lk.ijse.gdse72.ormfinalcoursework {
+
     requires javafx.fxml;
     requires static lombok;
     requires com.jfoenix;

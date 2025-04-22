@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -58,7 +59,24 @@ public class LoginPageController {
 
     private final UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
 
-    public void initialize() {}
+    public void initialize() {
+        changeFocus();
+    }
+
+    public void changeFocus() {
+
+        txtUserName.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtPassword.requestFocus();
+            }
+        });
+
+        txtPassword.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                btnLogin.fire();
+            }
+        });
+    }
 
     @FXML
     void fogotPasswordOnAction(ActionEvent event) {

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 @AllArgsConstructor
 @Entity
 @ToString
+
 public class User {
     @Id
     private String userId;

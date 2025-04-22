@@ -15,8 +15,10 @@ import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.PaymentBO;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapistBO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.PatientDAO;
+import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapistDAO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapySessionDAO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.PatientDAOImpl;
+import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.TherapistDAOImpl;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.TherapySessionDAOImpl;
 import lk.ijse.gdse72.ormfinalcoursework.dto.*;
 import lk.ijse.gdse72.ormfinalcoursework.dto.tm.PatientTM;
@@ -26,6 +28,7 @@ import lk.ijse.gdse72.ormfinalcoursework.entity.Payment;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,6 +114,9 @@ public class PaymentPageController {
     @FXML
     private JFXTextField txtSessionId;
 
+    @FXML
+    private JFXComboBox<String> cmbSessionId;
+
     private final PaymentBO paymentBO = (PaymentBO) BOFactory.getInstance().getBO(BOFactory.BOType.PAYMENT);
 
 
@@ -137,6 +143,7 @@ public class PaymentPageController {
         txtAmount.setText("");
         cmbPaymentMethod.setValue(null);
         cmbStatus.setValue(null);
+        cmbSessionId.setValue(null);
         txtBalance.setText("");
         txtPayedAmmount.setText("");
         datePayment.setValue(null);
@@ -163,7 +170,15 @@ public class PaymentPageController {
         tblPayments.setItems(paymentTMS);
     }
 
-    private void populateComboBoxes() {
+    private void populateComboBoxes() throws SQLException {
+
+        TherapySessionDAO sessionDAO = new TherapySessionDAOImpl();
+
+        ArrayList<String> sessionId = sessionDAO.getSessionId();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(sessionId);
+        cmbSessionId.setItems(observableList);
+
         ObservableList<String> methods = FXCollections.observableArrayList(
                 "Cash",
                 "Credit/Debit Card",
@@ -215,7 +230,7 @@ public class PaymentPageController {
     void loadSessionOnAction(ActionEvent event) {
         try {
             TherapySessionDAO therapySessionDAO = new TherapySessionDAOImpl();
-            TherapySessionDTO session = therapySessionDAO.getSession(txtSessionId.getText());
+            TherapySessionDTO session = therapySessionDAO.getSession(cmbSessionId.getValue());
             if (session != null) {
                 txtPatientName.setText(session.getPatientName());
             } else {

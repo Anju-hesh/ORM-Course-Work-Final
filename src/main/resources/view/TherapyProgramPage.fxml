@@ -43,7 +43,7 @@
          <font>
             <Font size="14.0" />
          </font></JFXTextField>
-        <JFXTextField fx:id="txtDuration" layoutX="213.0" layoutY="245.0" prefHeight="30.0" prefWidth="274.0">
+        <JFXTextField fx:id="txtDuration" layoutX="239.0" layoutY="245.0" prefHeight="30.0" prefWidth="248.0" visible="false">
          <font>
             <Font size="14.0" />
          </font></JFXTextField>
@@ -113,5 +113,7 @@
                 <TableColumn fx:id="colDescription" prefWidth="236.79998779296875" text="Description" />
             </columns>
         </TableView>
+      <JFXComboBox fx:id="cmbDuration" layoutX="239.0" layoutY="244.0" prefHeight="30.0" prefWidth="248.0" />
+      <JFXComboBox fx:id="cmbProgram" layoutX="213.0" layoutY="191.0" prefHeight="30.0" prefWidth="274.0" />
     </children>
 </AnchorPane>

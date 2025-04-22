@@ -1,5 +1,6 @@
 package lk.ijse.gdse72.ormfinalcoursework.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapistAvailabilityBO;
@@ -21,6 +23,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class TherapistAvailabilityController {
@@ -55,12 +58,16 @@ public class TherapistAvailabilityController {
     @FXML
     private Button btnSave;
 
+    @FXML
+    private JFXButton btnSearch;
+
     private final TherapistAvailabilityBO availabilityBO = (TherapistAvailabilityBO) BOFactory.getInstance().getBO(BOFactory.BOType.AVAILABILITY);
 
     @FXML
     public void initialize() {
 
         try {
+
             TherapistDAO therapistDAO = new TherapistDAOImpl();
 
             ArrayList<String> therapistIds = therapistDAO.getTherapist();
@@ -198,6 +205,59 @@ public class TherapistAvailabilityController {
             cmbStartTime.setValue(selectedAvailability.getStartTime());
             cmbEndTime.setValue(selectedAvailability.getEndTime());
             datePicker.setValue(selectedAvailability.getDate());
+        }
+    }
+
+    @FXML
+    void onSearchAvailability(ActionEvent event) {
+        String therapist = cmbTherapistId.getValue();
+
+        if (therapist != null && !therapist.isEmpty()) {
+            try {
+                List<TherapistAvailabilityDTO> availabilityDTOList = availabilityBO.searchAvailability(therapist);
+
+                if (availabilityDTOList != null && !availabilityDTOList.isEmpty()) {
+
+                    ObservableList<TherapistAvailabilityTM> availabilityTMS = FXCollections.observableArrayList();
+
+                    for (TherapistAvailabilityDTO dto : availabilityDTOList) {
+                        // Populate table
+                        availabilityTMS.add(new TherapistAvailabilityTM(
+                                dto.getId(),
+                                dto.getTherapistName(),
+                                dto.getDate(),
+                                dto.getStartTime(),
+                                dto.getEndTime()
+                        ));
+                    }
+
+                    // Optional: Just set the first entry in the form
+                    TherapistAvailabilityDTO first = availabilityDTOList.get(0);
+                    cmbTherapistId.setValue(first.getTherapistName());
+                    datePicker.setValue(first.getDate());
+                    cmbStartTime.setValue(first.getStartTime());
+                    cmbEndTime.setValue(first.getEndTime());
+
+                    tblAvailability.setItems(availabilityTMS);
+
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Therapist Not Found!").show();
+                }
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "An error occurred while searching!\n" + e.getMessage()).show();
+                e.printStackTrace();
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please enter a Therapist ID to search!").show();
+        }
+    }
+
+    public void refreshOnAction(ActionEvent actionEvent) {
+        try {
+            refrashPage();
+            loadTableData();
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 }

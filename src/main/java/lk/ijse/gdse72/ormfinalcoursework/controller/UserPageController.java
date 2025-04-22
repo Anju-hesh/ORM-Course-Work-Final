@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -28,12 +29,6 @@ public class UserPageController {
 
     @FXML
     private JFXButton btnDelete;
-
-    @FXML
-    private JFXButton btnSave;
-
-    @FXML
-    private JFXButton btnSearch;
 
     @FXML
     private JFXButton btnUpdate;
@@ -72,6 +67,7 @@ public class UserPageController {
             visibleData();
             refrashPage();
             loadTableData();
+            changeFocus();
 
             String nextuserID = USERBO.getNextuserId();
 
@@ -83,6 +79,21 @@ public class UserPageController {
 
         cmbRole.getItems().addAll("ADMIN" , "RECEPTIONIST");
 
+    }
+
+    public void changeFocus() {
+
+        txtUsername.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbRole.requestFocus();
+            }
+        });
+
+        cmbRole.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                btnUpdate.fire();
+            }
+        });
     }
 
     public void visibleData() {

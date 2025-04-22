@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TherapySessionDAOImpl implements TherapySessionDAO {
@@ -194,6 +195,29 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
             session.close();
             throw e;
         }
+    }
+
+    @Override
+    public ArrayList<String> getSessionId() throws SQLException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
+        ArrayList<String> sessionId = new ArrayList<>();
+
+        try {
+            transaction = session.beginTransaction();
+
+            Query<String> query = session.createQuery("SELECT t.id FROM TherapySession t", String.class);
+            sessionId = (ArrayList<String>) query.getResultList();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return sessionId;
     }
 
     private boolean isTimeInRange(LocalTime time, LocalTime start, LocalTime end) {

@@ -13,6 +13,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
@@ -72,6 +73,9 @@ public class TherapyProgramPageController {
     private AnchorPane subAnchor;
 
     @FXML
+    private JFXComboBox<String> cmbDuration;
+
+    @FXML
     private TableView<TherapyProgramTM> tblPrograms;
 
     @FXML
@@ -80,14 +84,17 @@ public class TherapyProgramPageController {
     @FXML
     private JFXTextArea txtDescription;
 
+//    @FXML
+//    private JFXTextField txtDuration;
+
     @FXML
-    private JFXTextField txtDuration;
+    private JFXComboBox<String> cmbProgram;
 
     @FXML
     private JFXTextField txtProgramId;
 
-    @FXML
-    private JFXTextField txtProgramName;
+//    @FXML
+//    private JFXTextField txtProgramName;
 
     private final TherapyProgramBO THERAPYPROGRAMBO = (TherapyProgramBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_PROGRAM);
 
@@ -98,6 +105,7 @@ public class TherapyProgramPageController {
             refrashPage();
             loadTableData();
             visibleData();
+            changeFocus();
 
             String nextProgramId = THERAPYPROGRAMBO.getNextTherapyProgramId();
             txtProgramId.setText(nextProgramId);
@@ -105,6 +113,39 @@ public class TherapyProgramPageController {
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Fail to load Page: " + e.getMessage()).show();
         }
+    }
+
+    public void changeFocus() {
+
+        cmbProgram.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbDuration.requestFocus();
+            }
+        });
+
+        cmbDuration.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtCost.requestFocus();
+            }
+        });
+
+        txtCost.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbTherapists.requestFocus();
+            }
+        });
+
+        cmbTherapists.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtDescription.requestFocus();
+            }
+        });
+
+        txtDescription.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                btnSave.fire();
+            }
+        });
     }
 
     public void refrashPage() {
@@ -116,10 +157,10 @@ public class TherapyProgramPageController {
             throw new RuntimeException(e);
         }
         txtProgramId.setText(nextProgramId);
-        txtProgramName.setText("");
+        cmbProgram.setValue(null);
         txtDescription.setText("");
         txtCost.setText("");
-        txtDuration.setText("");
+        cmbDuration.setValue(null);
         cmbTherapists.setValue(null);
     }
 
@@ -151,6 +192,18 @@ public class TherapyProgramPageController {
     }
 
     public void populateComboBoxes() throws SQLException {
+
+        ObservableList<String> programes = FXCollections.observableArrayList(
+                "Cognitive Behavioral Therapy", "Mindfulness-Based Stress Reduction" ,
+                "Dialectical Behavior Therapy" , "Group Therapy Sessions" , "Family Counseling"
+        );
+
+        cmbProgram.setItems(programes);
+
+        cmbDuration.setItems(FXCollections.observableArrayList(
+                "15 mins", "30 mins", "45 mins", "1 hour", "1 hour 30 mins", "2 hours"
+        ));
+
         TherapistDAO therapistDAO = new TherapistDAOImpl();
 
         ArrayList<String> therapistIds = therapistDAO.getTherapist();
@@ -206,8 +259,8 @@ public class TherapyProgramPageController {
     void saveOnAction(ActionEvent event) {
         try{
             String programId = txtProgramId.getText();
-            String programName = txtProgramName.getText();
-            String duration = txtDuration.getText();
+            String programName = cmbProgram.getValue();
+            String duration = cmbDuration.getValue();
             BigDecimal fee = new BigDecimal(txtCost.getText());
             String description = txtDescription.getText();
             String therapistId = cmbTherapists.getValue();
@@ -251,8 +304,8 @@ public class TherapyProgramPageController {
 
                 if (therapyProgramDTO != null) {
                     txtProgramId.setText(therapyProgramDTO.getTherapyId());
-                    txtProgramName.setText(therapyProgramDTO.getProgramName());
-                    txtDuration.setText(therapyProgramDTO.getDuration());
+                    cmbProgram.setValue(therapyProgramDTO.getProgramName());
+                    cmbDuration.setValue(therapyProgramDTO.getDuration());
                     txtCost.setText(therapyProgramDTO.getFee().toString());
                     txtDescription.setText(therapyProgramDTO.getDescription());
                     cmbTherapists.setValue(therapyProgramDTO.getTherapist());
@@ -286,8 +339,8 @@ public class TherapyProgramPageController {
     void updateOnAction(ActionEvent event) {
         try{
             String programId = txtProgramId.getText();
-            String programName = txtProgramName.getText();
-            String duration = txtDuration.getText();
+            String programName = cmbProgram.getValue();
+            String duration = cmbDuration.getValue();
             BigDecimal fee = new BigDecimal(txtCost.getText());
             String description = txtDescription.getText();
             String therapistId = cmbTherapists.getValue();
@@ -325,9 +378,9 @@ public class TherapyProgramPageController {
 
         if (selectedTherapyProgram != null) {
             txtProgramId.setText(selectedTherapyProgram.getTherapyId());
-            txtProgramName.setText(selectedTherapyProgram.getProgramName());
+            cmbProgram.setValue(selectedTherapyProgram.getProgramName());
             txtDescription.setText(selectedTherapyProgram.getDescription());
-            txtDuration.setText(selectedTherapyProgram.getDuration());
+            cmbDuration.setValue(selectedTherapyProgram.getDuration());
             cmbTherapists.setValue(selectedTherapyProgram.getTherapist());
             txtCost.setText(String.valueOf(selectedTherapyProgram.getFee()));
         }

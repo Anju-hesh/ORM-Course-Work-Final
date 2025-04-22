@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface TherapistAvailabilityDAO extends CrudDAO<TherapistAvailability , String> {
     List<TherapistAvailabilityDTO> getAvailabilityForTherapistOnDate(String therapistName , LocalDate date) ;
+    List<TherapistAvailability> searchTherapist( String therapistName ) throws Exception;
 }

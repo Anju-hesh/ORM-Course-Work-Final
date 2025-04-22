@@ -14,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
@@ -119,6 +120,7 @@ public class PatientPageController {
             refrashPage();
             loadTableData();
             visibleData();
+            changeFocus();
 
             String nextPatientId = PATIENTBO.getNextPatientId();
             txtPatientId.setText(nextPatientId);
@@ -126,6 +128,75 @@ public class PatientPageController {
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Fail to load Page: " + e.getMessage()).show();
         }
+    }
+
+    public void changeFocus() {
+
+        txtPatientId.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtFirstName.requestFocus();
+            }
+        });
+
+        txtFirstName.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtLastName.requestFocus();
+            }
+        });
+
+        txtLastName.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtAge.requestFocus();
+            }
+        });
+
+        txtAge.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbGender.requestFocus();
+            }
+        });
+
+        cmbGender.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtMedicalHistory.requestFocus();
+            }
+        });
+
+        txtMedicalHistory.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtContact.requestFocus();
+            }
+        });
+
+        txtContact.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtEmail.requestFocus();
+            }
+        });
+
+        txtEmail.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtAddress.requestFocus();
+            }
+        });
+
+        txtAddress.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                cmbBloodGroup.requestFocus();
+            }
+        });
+
+        cmbBloodGroup.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                txtAllergies.requestFocus();
+            }
+        });
+
+        txtAllergies.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                btnSave.fire();
+            }
+        });
     }
 
     private void populateComboBoxes() {
@@ -439,5 +510,9 @@ public class PatientPageController {
         } else {
             new Alert(Alert.AlertType.WARNING, "Please enter a Patient ID to search!").show();
         }
+    }
+
+    public void enterOnAction(ActionEvent actionEvent) {
+        searchOnAction(actionEvent);
     }
 }

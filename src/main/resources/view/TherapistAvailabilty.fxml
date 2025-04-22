@@ -9,45 +9,45 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #D3D3D3; -fx-border-radius: 20; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.ormfinalcoursework.controller.TherapistAvailabilityController">
+<AnchorPane fx:id="anchorPane" prefHeight="816.0" prefWidth="1080.0" style="-fx-background-color: #D3D3D3; -fx-border-radius: 20; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.gdse72.ormfinalcoursework.controller.TherapistAvailabilityController">
 
     <children>
 
         <!-- Header -->
-        <Label alignment="CENTER" layoutX="120.0" layoutY="20.0" prefWidth="460.0" text="Therapist Availability Schedule">
+        <Label alignment="CENTER" layoutX="2.0" layoutY="26.0" prefHeight="31.0" prefWidth="1074.0" text="Therapist Availability Schedule">
             <font>
                 <Font name="Bell MT" size="26.0" />
             </font>
         </Label>
 
         <!-- Form Fields -->
-        <Label layoutX="50.0" layoutY="90.0" text="Therapist :">
+        <Label layoutX="254.0" layoutY="145.0" text="Therapist :">
             <font><Font size="16.0" /></font>
         </Label>
-        <JFXComboBox fx:id="cmbTherapistId" layoutX="180.0" layoutY="85.0" prefWidth="400.0" />
+        <JFXComboBox fx:id="cmbTherapistId" layoutX="385.0" layoutY="145.0" prefWidth="400.0" />
 
-        <Label layoutX="50.0" layoutY="140.0" text="Available Date:">
+        <Label layoutX="254.0" layoutY="217.0" text="Available Date:">
             <font><Font size="16.0" /></font>
         </Label>
-        <DatePicker fx:id="datePicker" layoutX="180.0" layoutY="135.0" prefWidth="400.0" />
+        <DatePicker fx:id="datePicker" layoutX="393.0" layoutY="217.0" prefHeight="26.0" prefWidth="419.0" />
 
-        <Label layoutX="50.0" layoutY="190.0" text="Start Time:">
+        <Label layoutX="254.0" layoutY="276.0" text="Start Time:">
             <font><Font size="16.0" /></font>
         </Label>
-        <JFXComboBox fx:id="cmbStartTime" layoutX="180.0" layoutY="185.0" prefWidth="180.0" />
+        <JFXComboBox fx:id="cmbStartTime" layoutX="359.0" layoutY="276.0" prefWidth="180.0" />
 
-        <Label layoutX="370.0" layoutY="190.0" text="End Time:">
+        <Label layoutX="574.0" layoutY="276.0" text="End Time:">
             <font><Font size="16.0" /></font>
         </Label>
-        <JFXComboBox fx:id="cmbEndTime" layoutX="440.0" layoutY="185.0" prefWidth="140.0" />
+        <JFXComboBox fx:id="cmbEndTime" layoutX="665.0" layoutY="271.0" prefWidth="140.0" />
 
         <!-- Save Button -->
-        <JFXButton fx:id="btnSave" layoutX="75.0" layoutY="237.0" onAction="#onSaveAvailability" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Save Availability" textFill="WHITE">
+        <JFXButton fx:id="btnSave" layoutX="277.0" layoutY="344.0" onAction="#onSaveAvailability" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Save Availability" textFill="WHITE">
             <font><Font name="System Bold Italic" size="16.0" /></font>
         </JFXButton>
 
         <!-- Table of Availabilities -->
-        <TableView fx:id="tblAvailability" layoutX="30.0" layoutY="310.0" onMouseClicked="#tblAvailabilityClickOnAction" prefHeight="250.0" prefWidth="640.0">
+        <TableView fx:id="tblAvailability" layoutX="244.0" layoutY="461.0" onMouseClicked="#tblAvailabilityClickOnAction" prefHeight="339.0" prefWidth="640.0">
             <columns>
                 <TableColumn fx:id="colTherapistId" prefWidth="150.0" text="Therapist ID" />
                 <TableColumn fx:id="colDate" prefWidth="150.0" text="Date" />
@@ -55,7 +55,17 @@
                 <TableColumn fx:id="colEndTime" prefWidth="170.0" text="End Time" />
             </columns>
         </TableView>
-      <JFXButton fx:id="btnCansel" layoutX="455.0" layoutY="237.0" onAction="#canselOnAction" prefHeight="40.0" prefWidth="194.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Cansel Availability" textFill="WHITE">
+      <JFXButton fx:id="btnCansel" layoutX="657.0" layoutY="344.0" onAction="#canselOnAction" prefHeight="40.0" prefWidth="194.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Cansel Availability" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnSearch" layoutX="869.0" layoutY="138.0" onAction="#onSearchAvailability" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Search Availability" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnRefresh" layoutX="896.0" layoutY="747.0" onAction="#refreshOnAction" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: black; -fx-border-radius: 20; -fx-background-radius: 20;" text="Refresh" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="16.0" />
          </font>

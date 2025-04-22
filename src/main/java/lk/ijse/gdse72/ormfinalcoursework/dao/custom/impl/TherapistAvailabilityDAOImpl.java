@@ -64,8 +64,19 @@ public class TherapistAvailabilityDAOImpl implements TherapistAvailabilityDAO {
     }
 
     @Override
-    public TherapistAvailability search(String s) throws Exception {
-        return null;
+    public TherapistAvailability search(String id) throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            TherapistAvailability availability = session.get(TherapistAvailability.class, id);
+            return availability;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
@@ -111,6 +122,30 @@ public class TherapistAvailabilityDAOImpl implements TherapistAvailabilityDAO {
                     .stream()
                     .map(this::convertToDTO)
                     .collect(Collectors.toList());
+        }
+    }
+
+
+
+
+    @Override
+    public List<TherapistAvailability> searchTherapist(String therapistName) throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+
+        try {
+            String hql = "FROM TherapistAvailability WHERE therapistName = :name";
+            Query<TherapistAvailability> query = session.createQuery(hql, TherapistAvailability.class);
+            query.setParameter("name", therapistName);
+
+            List<TherapistAvailability> availabilities = query.getResultList();
+            return availabilities;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 

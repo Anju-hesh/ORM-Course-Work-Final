@@ -2,15 +2,14 @@ package lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl;
 
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapistAvailabilityBO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.DAOFactory;
-import lk.ijse.gdse72.ormfinalcoursework.dao.custom.PatientDAO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapistAvailabilityDAO;
-import lk.ijse.gdse72.ormfinalcoursework.dto.PatientDTO;
 import lk.ijse.gdse72.ormfinalcoursework.dto.TherapistAvailabilityDTO;
-import lk.ijse.gdse72.ormfinalcoursework.entity.Patient;
 import lk.ijse.gdse72.ormfinalcoursework.entity.TherapistAvailability;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TherapistAvailabilityBOImpl implements TherapistAvailabilityBO {
 
@@ -54,4 +53,25 @@ public class TherapistAvailabilityBOImpl implements TherapistAvailabilityBO {
         }
         return therapistAvailabilityDTOS;
     }
+
+    public List<TherapistAvailabilityDTO> searchAvailability(String therapist) throws Exception {
+        List<TherapistAvailability> availabilityList = therapistAvailabilityDAO.searchTherapist(therapist);
+
+        if (availabilityList == null || availabilityList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<TherapistAvailabilityDTO> dtoList = new ArrayList<>();
+        for (TherapistAvailability availability : availabilityList) {
+            dtoList.add(new TherapistAvailabilityDTO(
+                    availability.getId(),
+                    availability.getTherapistName(),
+                    availability.getAvailableDate(),
+                    availability.getStartTime(),
+                    availability.getEndTime()
+            ));
+        }
+        return dtoList;
+    }
+
 }
