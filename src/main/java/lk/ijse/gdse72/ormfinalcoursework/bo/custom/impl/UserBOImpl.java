@@ -1,15 +1,12 @@
 package lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl;
 
-import jakarta.persistence.PersistenceException;
 import javafx.scene.control.Alert;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.UserBO;
-import lk.ijse.gdse72.ormfinalcoursework.config.FactoryConfiguration;
 import lk.ijse.gdse72.ormfinalcoursework.dao.DAOFactory;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.UserDAO;
 import lk.ijse.gdse72.ormfinalcoursework.dto.UserDTO;
 import lk.ijse.gdse72.ormfinalcoursework.entity.User;
 import lk.ijse.gdse72.ormfinalcoursework.servise.PasswordUtil;
-import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,9 +22,9 @@ public class UserBOImpl implements UserBO {
 
             if (user != null) {
                 boolean passwordMatches = PasswordUtil.checkPassword(password, user.getPassword());
-                System.out.println("User found: " + user.getUserName());
-                System.out.println("Stored hash: " + user.getPassword());
-                System.out.println("Plain password: " + password);
+//                System.out.println("User found: " + user.getUserName());
+//                System.out.println("Stored hash: " + user.getPassword());
+//                System.out.println("Plain password: " + password);
                 return passwordMatches;
             }
             return false;

@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientDAOImpl implements PatientDAO {
@@ -140,11 +141,6 @@ public class PatientDAOImpl implements PatientDAO {
 
         try {
 
-//            Patient patient = session.createQuery("FROM Patient ORDER BY id DESC", Patient.class)
-//                    .setMaxResults(1)
-//                    .uniqueResult();
-
-
             Patient patient = session.createQuery(
                             "FROM Patient WHERE id = :patientId", Patient.class)
                     .setParameter("patientId", patientId)
@@ -176,6 +172,29 @@ public class PatientDAOImpl implements PatientDAO {
             session.close();
             throw e;
         }
+    }
+
+    @Override
+    public ArrayList<String> getPatientid() {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
+        ArrayList<String> patientIds = new ArrayList<>();
+
+        try {
+            transaction = session.beginTransaction();
+
+            Query<String> query = session.createQuery("SELECT t.id FROM Patient t", String.class);
+            patientIds = (ArrayList<String>) query.getResultList();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return patientIds;
     }
 
     /*

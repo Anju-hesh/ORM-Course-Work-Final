@@ -12,17 +12,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
-import lk.ijse.gdse72.ormfinalcoursework.bo.custom.PatientBO;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapySessionBO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.PatientDAO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapistDAO;
-import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapyProgramDAO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.PatientDAOImpl;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.TherapistDAOImpl;
-import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.TherapyProgramDAOImpl;
 import lk.ijse.gdse72.ormfinalcoursework.dto.PatientDTO;
 import lk.ijse.gdse72.ormfinalcoursework.dto.TherapySessionDTO;
-import lk.ijse.gdse72.ormfinalcoursework.dto.tm.TherapyProgramTM;
 import lk.ijse.gdse72.ormfinalcoursework.dto.tm.TherapySessionTM;
 
 import java.sql.Date;
@@ -45,7 +41,8 @@ public class TherapySessionPageController {
     @FXML private AnchorPane subAnchor;
     @FXML private TableView<TherapySessionTM> tblSessions;
     @FXML private ComboBox<String> timeComboBox;
-    @FXML private JFXTextField txtNotes, txtPatientId, txtPatientName, txtSessionId;
+    @FXML private JFXTextField txtNotes, txtPatientName, txtSessionId;
+    @FXML private JFXComboBox<String> cmbPatientId;
 
     private final TherapySessionBO THERAPYSESSIONBO = (TherapySessionBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_SESSION);
 
@@ -62,13 +59,28 @@ public class TherapySessionPageController {
     }
 
     private void populateComboBoxes() throws Exception {
+
+        PatientDAO patientDAO = new PatientDAOImpl();
+
+        ArrayList<String> patientIds = patientDAO.getPatientid();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        observableList.addAll(patientIds);
+        cmbPatientId.setItems(observableList);
+
         // Therapist
         TherapistDAO therapistDAO = new TherapistDAOImpl();
         cmbTherapist.setItems(FXCollections.observableArrayList(therapistDAO.getTherapist()));
 
         // Program
-        TherapyProgramDAO therapyProgramDAO = new TherapyProgramDAOImpl();
-        cmbProgram.setItems(FXCollections.observableArrayList(therapyProgramDAO.getPrograms()));
+//        TherapyProgramDAO therapyProgramDAO = new TherapyProgramDAOImpl();
+//        cmbProgram.setItems(FXCollections.observableArrayList(therapyProgramDAO.getPrograms()));
+
+        ObservableList<String> programes = FXCollections.observableArrayList(
+                "Cognitive Behavioral Therapy", "Mindfulness-Based Stress Reduction" ,
+                "Dialectical Behavior Therapy" , "Group Therapy Sessions" , "Family Counseling"
+        );
+
+        cmbProgram.setItems(programes);
 
         // Time slots
         List<String> timeSlots = new ArrayList<>();
@@ -97,7 +109,7 @@ public class TherapySessionPageController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        txtPatientId.clear();
+        cmbPatientId.setValue(null);
         txtPatientName.clear();
         cmbTherapist.setValue(null);
         cmbStatus.setValue(null);
@@ -140,7 +152,7 @@ public class TherapySessionPageController {
     void bookOnAction(ActionEvent event) {
         try {
             String sessionId = txtSessionId.getText();
-            String patientId = txtPatientId.getText();
+            String patientId = cmbPatientId.getValue();
             String patientName = txtPatientName.getText();
             String therapistId = cmbTherapist.getValue();
             String program = cmbProgram.getValue();
@@ -220,9 +232,9 @@ public class TherapySessionPageController {
         try {
 
             PatientDAO patientDAO = new PatientDAOImpl();
-            PatientDTO patient = patientDAO.getPatient(txtPatientId.getText());
+            PatientDTO patient = patientDAO.getPatient(cmbPatientId.getValue());
             if (patient != null) {
-                txtPatientId.setText(patient.getPatientId());
+                cmbPatientId.setValue(patient.getPatientId());
                 txtPatientName.setText(patient.getFirstName() + " " + patient.getLastName());
             } else {
                 new Alert(Alert.AlertType.WARNING, "No patient found!").show();
@@ -238,7 +250,7 @@ public class TherapySessionPageController {
         TherapySessionTM selected = tblSessions.getSelectionModel().getSelectedItem();
         if (selected != null) {
             txtSessionId.setText(selected.getSessionId());
-            txtPatientId.setText(selected.getPatientId());
+            cmbPatientId.setValue(selected.getPatientId());
             txtPatientName.setText(selected.getPatientName());
             cmbTherapist.setValue(selected.getTherapistId());
             cmbProgram.setValue(selected.getProgram());
@@ -284,7 +296,7 @@ public class TherapySessionPageController {
     void rescheduleOnAction(ActionEvent event) {
         try {
             String sessionId = txtSessionId.getText();
-            String patientId = txtPatientId.getText();
+            String patientId = cmbPatientId.getValue();
             String patientName = txtPatientName.getText();
             String therapistId = cmbTherapist.getValue();
             String program = cmbProgram.getValue();
@@ -328,7 +340,7 @@ public class TherapySessionPageController {
 
                 if (therapySessionDTO != null) {
                     txtSessionId.setText(therapySessionDTO.getSessionId());
-                    txtPatientId.setText(therapySessionDTO.getPatientId());
+                    cmbPatientId.setValue(therapySessionDTO.getPatientId());
                     txtPatientName.setText(therapySessionDTO.getPatientName());
                     cmbTherapist.setValue(therapySessionDTO.getTherapistId());
                     cmbProgram.setValue(therapySessionDTO.getProgram());

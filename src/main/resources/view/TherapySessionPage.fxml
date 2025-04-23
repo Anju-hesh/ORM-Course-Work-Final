@@ -47,7 +47,7 @@
         </Label>
 
         <JFXTextField fx:id="txtSessionId" layoutX="220.0" layoutY="120.0" prefHeight="30.0" prefWidth="189.0" />
-        <JFXTextField fx:id="txtPatientId" layoutX="220.0" layoutY="170.0" prefHeight="30.0" prefWidth="189.0" />
+        <JFXTextField fx:id="txtPatientId" layoutX="220.0" layoutY="170.0" prefHeight="30.0" prefWidth="189.0" visible="false" />
         <JFXTextField fx:id="txtPatientName" editable="false" layoutX="220.0" layoutY="220.0" prefHeight="30.0" prefWidth="274.0" />
         <JFXComboBox fx:id="cmbTherapist" layoutX="220.0" layoutY="270.0" prefHeight="30.0" prefWidth="274.0" />
         <JFXComboBox fx:id="cmbProgram" layoutX="220.0" layoutY="320.0" prefHeight="30.0" prefWidth="274.0" />
@@ -133,5 +133,6 @@
                 <TableColumn fx:id="colStatus" prefWidth="173.59991455078125" text="Status" />
             </columns>
         </TableView>
+      <JFXComboBox fx:id="cmbPatientId" layoutX="219.0" layoutY="169.0" prefHeight="30.0" prefWidth="190.0" />
     </children>
 </AnchorPane>

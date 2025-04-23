@@ -111,8 +111,8 @@ public class PaymentPageController {
     @FXML
     private JFXTextField txtPaymentId;
 
-    @FXML
-    private JFXTextField txtSessionId;
+//    @FXML
+//    private JFXTextField txtSessionId;
 
     @FXML
     private JFXComboBox<String> cmbSessionId;
@@ -138,7 +138,7 @@ public class PaymentPageController {
     private void refrashPage() throws Exception {
         String nextTherapistId = paymentBO.getNextPaymentId();
         txtPaymentId.setText(nextTherapistId);
-        txtSessionId.setText("");
+        cmbSessionId.setValue("");
         txtPatientName.setText("");
         txtAmount.setText("");
         cmbPaymentMethod.setValue(null);
@@ -247,7 +247,7 @@ public class PaymentPageController {
     void processPaymentOnAction(ActionEvent event) {
         try{
             String paymentId = txtPaymentId.getText();
-            String sessionId = txtSessionId.getText();
+            String sessionId = cmbSessionId.getValue();
             String patientName = txtPatientName.getText();
             BigDecimal amount = new BigDecimal(txtAmount.getText());
             String paymentMethod = cmbPaymentMethod.getValue();
@@ -258,7 +258,7 @@ public class PaymentPageController {
 
 
 
-            if (!paymentId.isEmpty() && !sessionId.isEmpty() && !patientName.isEmpty() && amount != null  && !paymentMethod.isEmpty() && !status.isEmpty() && paidAmount != null && balance != null && paymentDate != null) {
+            if (!paymentId.isEmpty() && !sessionId.isEmpty() && !patientName.isEmpty() && !paymentMethod.isEmpty() && !status.isEmpty() && paymentDate != null) {
                 PaymentDTO paymentDTO = new PaymentDTO(
                         paymentId,
                         sessionId,
@@ -300,7 +300,7 @@ public class PaymentPageController {
 
                 if (paymentDTO !=null) {
                     txtPaymentId.setText(paymentDTO.getId());
-                    txtSessionId.setText(paymentDTO.getSessionId());
+                    cmbSessionId.setValue(paymentDTO.getSessionId());
                     txtPatientName.setText(paymentDTO.getPatientName());
                     txtAmount.setText(String.valueOf(paymentDTO.getAmount()));
                     cmbStatus.setValue(paymentDTO.getStatus());
@@ -373,7 +373,7 @@ public class PaymentPageController {
 
         if (selectedPayment != null) {
             txtPaymentId.setText(selectedPayment.getId());
-            txtSessionId.setText(selectedPayment.getSessionId());
+            cmbSessionId.setValue(selectedPayment.getSessionId());
             txtPatientName.setText(selectedPayment.getPatientName());
             txtAmount.setText(selectedPayment.getAmount().toString());
             cmbPaymentMethod.setValue(selectedPayment.getPaymentMethod());
