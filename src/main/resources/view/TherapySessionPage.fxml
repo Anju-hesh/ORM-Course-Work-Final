@@ -81,7 +81,7 @@
         <ComboBox fx:id="timeComboBox" layoutX="700.0" layoutY="170.0" prefHeight="30.0" prefWidth="214.0" />
 
         <JFXComboBox fx:id="cmbDuration" layoutX="720.0" layoutY="220.0" prefHeight="30.0" prefWidth="214.0" />
-        <JFXComboBox fx:id="cmbStatus" layoutX="700.0" layoutY="270.0" prefHeight="30.0" prefWidth="214.0" />
+        <JFXComboBox fx:id="cmbStatus" layoutX="700.0" layoutY="270.0" prefHeight="30.0" prefWidth="214.0" visible="false" />
 
         <!-- Action Buttons -->
         <JFXButton fx:id="btnBook" layoutX="62.0" layoutY="380.0" onAction="#bookOnAction" prefHeight="42.0" prefWidth="150.0" style="-fx-background-color: black; -fx-border-radius: 20;" text="Book" textFill="WHITE">
@@ -134,5 +134,6 @@
             </columns>
         </TableView>
       <JFXComboBox fx:id="cmbPatientId" layoutX="219.0" layoutY="169.0" prefHeight="30.0" prefWidth="190.0" />
+      <JFXTextField fx:id="txtStatus" layoutX="700.0" layoutY="273.0" prefHeight="26.0" prefWidth="214.0" />
     </children>
 </AnchorPane>

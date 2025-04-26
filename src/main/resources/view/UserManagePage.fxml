@@ -33,7 +33,7 @@
          <font>
             <Font size="14.0" />
          </font></JFXTextField>
-        <JFXTextField fx:id="txtUsername" layoutX="223.0" layoutY="240.0" prefHeight="30.0" prefWidth="378.0">
+        <JFXTextField fx:id="txtUsername" layoutX="223.0" layoutY="240.0" prefHeight="30.0" prefWidth="250.0">
          <font>
             <Font size="14.0" />
          </font></JFXTextField>
@@ -75,5 +75,15 @@
                 <TableColumn fx:id="colRole" prefWidth="218.39990234375" text="Role" />
             </columns>
         </TableView>
+      <Label layoutX="486.0" layoutY="240.0" prefHeight="30.0" prefWidth="150.0" text="E - Mail :">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="txtEmail" layoutX="647.0" layoutY="240.0" prefHeight="30.0" prefWidth="378.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXTextField>
     </children>
 </AnchorPane>

@@ -290,7 +290,7 @@ public class TherapyProgramPageController {
             }
 
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter valid numeric values for Age and Contact Number!").show();
+            new Alert(Alert.AlertType.ERROR, "Please enter valid values " + e.getMessage()).show();
         }
     }
 
@@ -383,6 +383,24 @@ public class TherapyProgramPageController {
             cmbDuration.setValue(selectedTherapyProgram.getDuration());
             cmbTherapists.setValue(selectedTherapyProgram.getTherapist());
             txtCost.setText(String.valueOf(selectedTherapyProgram.getFee()));
+        }
+    }
+
+    public void selctProgramOnAction(ActionEvent actionEvent) {
+        String program = cmbProgram.getValue();
+
+        if (program == null) {
+//            new Alert(Alert.AlertType.INFORMATION, "Program Is Null: ").show();
+        } else if (program.equals("Cognitive Behavioral Therapy")) {
+            txtCost.setText(String.valueOf(80000.00));
+        } else if (program.equals("Mindfulness-Based Stress Reduction")) {
+            txtCost.setText(String.valueOf(50000.00));
+        } else if (program.equals("Dialectical Behavior Therapy")) {
+            txtCost.setText(String.valueOf(100000.00));
+        } else if (program.equals("Group Therapy Sessions")) {
+            txtCost.setText(String.valueOf(120000.00));
+        } else if (program.equals("Family Counseling")) {
+            txtCost.setText(String.valueOf(40000.00));
         }
     }
 }

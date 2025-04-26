@@ -13,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Cacheable
+
 public class Patient {
 
     @Id
@@ -48,10 +50,10 @@ public class Patient {
     @Column(length = 1000)
     private String allergies;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TherapySession> therapySessions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Payment> payments = new ArrayList<>();
 
     public Patient(String patientId, String firstName, String lastName, int age, String gender,

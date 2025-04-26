@@ -14,6 +14,7 @@ module lk.ijse.gdse72.ormfinalcoursework {
     requires java.naming;
     requires jbcrypt;
     requires java.management;
+    requires java.mail;
 
     opens lk.ijse.gdse72.ormfinalcoursework.config to jakarta.persistence;
     opens lk.ijse.gdse72.ormfinalcoursework.entity to org.hibernate.orm.core;

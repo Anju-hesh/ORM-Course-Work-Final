@@ -11,8 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
+import lk.ijse.gdse72.ormfinalcoursework.bo.custom.UserBO;
+import lk.ijse.gdse72.ormfinalcoursework.servise.EnteredUserId;
+import lk.ijse.gdse72.ormfinalcoursework.servise.SendEmail;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Random;
 
 public class PasswordRecoveryController {
 
@@ -67,6 +73,11 @@ public class PasswordRecoveryController {
     @FXML
     private JFXTextField txtUserName;
 
+    Random rand = new Random();
+    private final SendEmail sendEmail = new SendEmail();
+    private final UserBO USERBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
+    private int code = rand.nextInt(1000,9999);
+
     public void initialize() {
         changeFocus();
     }
@@ -97,13 +108,60 @@ public class PasswordRecoveryController {
     }
 
     @FXML
-    void sendCodeOnAction(ActionEvent event) {
+    void sendCodeOnAction(ActionEvent event) throws SQLException {
+        String[] userNameAndEmail = USERBO.getDetails(txtEmail.getText());
+        System.out.println(userNameAndEmail[0] + " , " + userNameAndEmail[1]);
 
+        if (userNameAndEmail[0].equals( txtUserName.getText() )&& userNameAndEmail[1].equals(txtEmail.getText())) {
+            String userId = USERBO.getId(txtEmail.getText());
+            EnteredUserId.setUserId(userId);
+            String from = "anjanaheshan676@gmail.com";
+            String to = txtEmail.getText();
+            String subject = "Your password reset verification code";
+            String body = "Your OTP " + code;
+            sendEmail.sendEmailWithGmail(from, to, subject, body);
+//            new Alert(Alert.AlertType.CONFIRMATION,"Enter the code below").show();
+
+            txtCode1.setVisible(true);
+            txtCode2.setVisible(true);
+            txtCode3.setVisible(true);
+            txtCode4.setVisible(true);
+        }else {
+            new Alert(Alert.AlertType.ERROR,"Invalid Email Address or User Name!").show();
+        }
     }
 
     @FXML
     void submitButton(ActionEvent event) {
-
+        String otpCcode = txtCode1.getText() + txtCode2.getText() + txtCode3.getText() + txtCode4.getText();
+        if (code == Integer.parseInt(otpCcode)){
+            try{
+                fogetPasswordAnchorPane.getChildren().clear();
+                fogetPasswordAnchorPane.getChildren().add(FXMLLoader.load(getClass().getResource("/view/resetPasswordPage.fxml")));
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR,"Fail to load Page!" + e.getMessage()).show();
+            }
+        }else{
+            new Alert(Alert.AlertType.ERROR,"Invalid OTP Code!").show();
+        }
     }
+//    public void changeFocusTextForget() {
+//        JFXTextField[] textFields = { txtUserName, txtEmail };
+//
+//        for (int i = 0; i < textFields.length; i++) {
+//            int currentIndex = i;
+//            textFields[i].setOnKeyPressed(event -> {
+//                if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.DOWN) {
+//                    int nextIndex = (currentIndex + 1) % textFields.length;
+//                    textFields[nextIndex].requestFocus();
+//                } else if (event.getCode() == KeyCode.UP) {
+//
+//                    int previousIndex = (currentIndex - 1 + textFields.length) % textFields.length;
+//                    textFields[previousIndex].requestFocus();
+//
+//                }
+//            });
+//        }
+//    }
 
 }

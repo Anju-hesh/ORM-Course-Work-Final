@@ -18,4 +18,6 @@ public interface TherapySessionBO extends SuperBO {
     boolean updateTherapySession(TherapySessionDTO therapySessionDTO) throws Exception;
     TherapySessionDTO searchTherapySession(String sessionId) throws Exception;
     boolean deleteTherapySession(String sessionId) throws Exception;
+    boolean isTherapistAvailable(String therapistName, LocalDate date, LocalTime startTime, LocalTime endTime) throws Exception;
+
 }

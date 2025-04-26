@@ -41,7 +41,8 @@ public class UserBOImpl implements UserBO {
                 user.getUserId(),
                 user.getUserName(),
                 user.getPassword(),
-                user.getRole()
+                user.getRole(),
+                user.getEmail()
             );
         }
         return null;
@@ -65,7 +66,7 @@ public class UserBOImpl implements UserBO {
             String hashedPassword = PasswordUtil.hashPassword(dto.getPassword());
             System.out.println("Hashed password during registration: " + hashedPassword);
 
-            User user = new User(dto.getUserId(), dto.getUserName(), hashedPassword, dto.getRole());
+            User user = new User(dto.getUserId(), dto.getUserName(), hashedPassword, dto.getRole() , dto.getEmail());
             userDAO.save(user);
             return true;
 
@@ -83,7 +84,8 @@ public class UserBOImpl implements UserBO {
                     user.getUserId(),
                     user.getUserName(),
                     user.getPassword(),
-                    user.getRole()
+                    user.getRole(),
+                    user.getEmail()
             );
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR,"User Not Found").show();
@@ -119,7 +121,8 @@ public class UserBOImpl implements UserBO {
                 userDTO.getUserId(),
                 userDTO.getUserName(),
                 hashedPassword,
-                userDTO.getRole()
+                userDTO.getRole(),
+                userDTO.getEmail()
         );
 
         return userDAO.update(user);
@@ -135,7 +138,8 @@ public class UserBOImpl implements UserBO {
                     user.getUserId(),
                     user.getUserName(),
                     user.getPassword(),
-                    user.getRole()
+                    user.getRole(),
+                    user.getEmail()
             ));
         }
 
@@ -145,6 +149,21 @@ public class UserBOImpl implements UserBO {
     public String getNextuserId() throws SQLException, ClassNotFoundException {
 
         return userDAO.getNextId();
+    }
+
+    @Override
+    public String[] getDetails(String text) throws SQLException {
+        return userDAO.getDetails(text);
+    }
+
+    @Override
+    public String getId(String text) throws SQLException {
+        return userDAO.getId(text);
+    }
+
+    @Override
+    public boolean updateDetails(String password, String id) throws SQLException {
+        return userDAO.updateDetails(password, id);
     }
 }
 

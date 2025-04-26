@@ -68,6 +68,14 @@
                 <Insets left="20.0" top="70.0" />
             </VBox.margin>
         </Button>
+      <Label fx:id="lblPassword" prefHeight="37.0" prefWidth="214.0">
+         <VBox.margin>
+            <Insets left="20.0" top="5.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Italic" size="18.0" />
+         </font>
+      </Label>
     </VBox>
     <Pane fx:id="rightPane" layoutX="410.0" layoutY="37.0" prefHeight="816.0" prefWidth="1080.0" />
     <ImageView fx:id="backIcon" fitHeight="30.0" fitWidth="35.0" layoutX="361.0" layoutY="22.0" onMouseClicked="#backOnAction" pickOnBounds="true" preserveRatio="true">

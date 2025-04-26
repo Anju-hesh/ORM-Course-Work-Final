@@ -39,7 +39,7 @@
 
             <Text layoutX="202.0" layoutY="109.0" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333;" text="Create Account" />
 
-            <HBox alignment="CENTER" layoutX="88.0" layoutY="544.0" prefHeight="30" prefWidth="400">
+            <HBox alignment="CENTER" layoutX="116.0" layoutY="588.0" prefHeight="30" prefWidth="400">
                 <Text style="-fx-fill: #666;" text="Already have an account? " />
                 <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#LoginOnAction" style="-fx-background-color: transparent; -fx-text-fill: #4a90e2; -fx-font-weight: bold; -fx-padding: 0 0 0 5; -fx-cursor: hand;" text="Login" />
             </HBox>
@@ -74,7 +74,7 @@
                 </effect>
             </JFXComboBox>
 
-            <JFXButton fx:id="btnSignUp" layoutX="128.0" layoutY="476.0" onAction="#SignUpOnAction" prefHeight="38.0" prefWidth="306.0" style="-fx-background-color: #4a90e2; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-weight: bold; -jfx-button-type: RAISED; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-cursor: hand; -fx-font-size: 18;" text="Sign Up">
+            <JFXButton fx:id="btnSignUp" layoutX="156.0" layoutY="520.0" onAction="#SignUpOnAction" prefHeight="38.0" prefWidth="306.0" style="-fx-background-color: #4a90e2; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-weight: bold; -jfx-button-type: RAISED; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-cursor: hand; -fx-font-size: 18;" text="Sign Up">
                 <font>
                     <Font name="Bodoni MT Bold Italic" size="18.0" />
                 </font>
@@ -94,6 +94,11 @@
          </ImageView>
          <TextField fx:id="showPassword" layoutX="50.0" layoutY="281.0" prefHeight="38.0" prefWidth="439.0" visible="false" />
          <TextField fx:id="showConfirmPassword" layoutX="50.0" layoutY="342.0" prefHeight="38.0" prefWidth="439.0" visible="false" />
+         <JFXTextField fx:id="txtEmail" layoutX="50.0" layoutY="466.0" prefHeight="38.0" prefWidth="439.0" promptText="E - Mail" style="-jfx-focus-color: #4a90e2; -jfx-unfocus-color: #cccccc; -fx-prompt-text-fill: #999; -fx-text-fill: #333; -fx-font-size: 14px; -fx-background-color: transparent; -fx-cursor: text;">
+            <effect>
+               <Glow level="0.1" />
+            </effect>
+         </JFXTextField>
         </Pane>
 
         <!-- Right Side (Image) -->

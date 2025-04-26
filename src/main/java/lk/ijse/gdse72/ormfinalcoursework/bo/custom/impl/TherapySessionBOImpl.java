@@ -131,4 +131,9 @@ public class TherapySessionBOImpl implements TherapySessionBO {
     public boolean deleteTherapySession(String sessionId) throws Exception {
         return THERAPYSESSIONDAO.delete(sessionId);
     }
+
+    @Override
+    public boolean isTherapistAvailable(String therapistName, LocalDate date, LocalTime startTime, LocalTime endTime) throws Exception {
+        return availabilityDAO.isTherapistAvailable(therapistName, date, startTime, endTime);
+    }
 }

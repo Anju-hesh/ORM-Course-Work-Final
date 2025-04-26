@@ -12,7 +12,8 @@ public interface UserDAO extends CrudDAO<User, String> {
 //    User getLastUser() throws Exception;
 
     boolean confirmation(String userId, String password) throws SQLException;
-
+    String[] getDetails(String text) throws SQLException ;
     String getNextId() throws HibernateException;
-
+    String getId(String text) throws SQLException ;
+    boolean updateDetails(String password, String id) throws SQLException ;
 }

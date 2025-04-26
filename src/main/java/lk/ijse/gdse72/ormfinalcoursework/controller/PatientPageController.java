@@ -211,7 +211,8 @@ public class PatientPageController {
         cmbGender.setItems(genders);
 
         ObservableList<String> therapyTypes = FXCollections.observableArrayList(
-                "All", "Physiotherapy", "Psychotherapy", "Occupational Therapy", "Speech Therapy"
+                "All",   "Cognitive Behavioral Therapy", "Mindfulness-Based Stress Reduction" ,
+                "Dialectical Behavior Therapy" , "Group Therapy Sessions" , "Family Counseling"
         );
         cmbFilterTherapy.setItems(therapyTypes);
         cmbFilterTherapy.setValue("All");
@@ -324,29 +325,37 @@ public class PatientPageController {
     void filterOnAction(ActionEvent event) {
         String therapyType = cmbFilterTherapy.getValue();
 
-        if (therapyType == null || therapyType.equals("All")) {
-            try {
-                loadTableData();
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Error loading data: " + e.getMessage()).show();
-            }
-            return;
-        }
-
         try {
-            // This is a placeholder - you would need to implement a method in your BO layer
-            // to filter patients by therapy type if that's what you need
-            // ArrayList<PatientDTO> filteredPatients = PATIENTBO.getPatientsByTherapyType(therapyType);
+            if (therapyType == null || therapyType.equals("All")) {
+                loadTableData();
+            } else {
 
-            // For now, just reload all data and display a message
-            loadTableData();
-            new Alert(Alert.AlertType.INFORMATION,
-                    "Filter functionality needs to be implemented in PatientBO to filter by therapy type: " + therapyType).show();
+                ArrayList<PatientDTO> filteredPatients = PATIENTBO.getPatientsByTherapyType(therapyType);
 
+                ObservableList<PatientTM> patientTMS = FXCollections.observableArrayList();
+                for (PatientDTO patientDTO : filteredPatients) {
+                    PatientTM patientTM = new PatientTM(
+                            patientDTO.getPatientId(),
+                            patientDTO.getFirstName(),
+                            patientDTO.getLastName(),
+                            patientDTO.getAge(),
+                            patientDTO.getGender(),
+                            patientDTO.getMedicalHistory(),
+                            patientDTO.getContact(),
+                            patientDTO.getEMail(),
+                            patientDTO.getAddress(),
+                            patientDTO.getBloodGroup(),
+                            patientDTO.getAllergies()
+                    );
+                    patientTMS.add(patientTM);
+                }
+                tblPatients.setItems(patientTMS);
+            }
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Error filtering data: " + e.getMessage()).show();
         }
     }
+
 
     @FXML
     void saveOnAction(ActionEvent event) {

@@ -11,5 +11,6 @@ public interface PatientDAO extends CrudDAO<Patient , String> {
 
     PatientDTO getPatient(String patientId) ;
     ArrayList<String> getPatientid();
+    ArrayList<Patient> getPatientsByTherapyType(String therapyType) throws Exception;
 
 }

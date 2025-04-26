@@ -33,7 +33,7 @@ import java.util.Optional;
 public class TherapySessionPageController {
 
     @FXML private JFXButton btnBook, btnCancel, btnCheckAvailable, btnClear, btnLoadPatient, btnReschedule, btnSearch;
-    @FXML private JFXComboBox<String> cmbDuration, cmbProgram, cmbStatus, cmbTherapist;
+    @FXML private JFXComboBox<String> cmbDuration, cmbProgram, cmbTherapist;
     @FXML private TableColumn<TherapySessionTM, Date> colDate;
     @FXML private TableColumn<TherapySessionTM, String> colDuration, colPatientName, colProgram, colSessionId, colStatus, colTherapist;
     @FXML private TableColumn<TherapySessionTM, Time> colTime;
@@ -42,6 +42,8 @@ public class TherapySessionPageController {
     @FXML private TableView<TherapySessionTM> tblSessions;
     @FXML private ComboBox<String> timeComboBox;
     @FXML private JFXTextField txtNotes, txtPatientName, txtSessionId;
+    @FXML
+    private JFXTextField txtStatus;
     @FXML private JFXComboBox<String> cmbPatientId;
 
     private final TherapySessionBO THERAPYSESSIONBO = (TherapySessionBO) BOFactory.getInstance().getBO(BOFactory.BOType.THERAPY_SESSION);
@@ -53,6 +55,8 @@ public class TherapySessionPageController {
             loadTableData();
             visibleData();
             txtSessionId.setText(THERAPYSESSIONBO.getNextTherapySessionId());
+            btnBook.setDisable(false);
+
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Failed to load page: " + e.getMessage()).show();
         }
@@ -72,9 +76,6 @@ public class TherapySessionPageController {
         cmbTherapist.setItems(FXCollections.observableArrayList(therapistDAO.getTherapist()));
 
         // Program
-//        TherapyProgramDAO therapyProgramDAO = new TherapyProgramDAOImpl();
-//        cmbProgram.setItems(FXCollections.observableArrayList(therapyProgramDAO.getPrograms()));
-
         ObservableList<String> programes = FXCollections.observableArrayList(
                 "Cognitive Behavioral Therapy", "Mindfulness-Based Stress Reduction" ,
                 "Dialectical Behavior Therapy" , "Group Therapy Sessions" , "Family Counseling"
@@ -98,9 +99,9 @@ public class TherapySessionPageController {
         ));
 
         // Status
-        cmbStatus.setItems(FXCollections.observableArrayList(
-                "Available", "Unavailable"
-        ));
+//        cmbStatus.setItems(FXCollections.observableArrayList(
+//                "Available", "Unavailable"
+//        ));
     }
 
     private void refreshPage() {
@@ -112,7 +113,7 @@ public class TherapySessionPageController {
         cmbPatientId.setValue(null);
         txtPatientName.clear();
         cmbTherapist.setValue(null);
-        cmbStatus.setValue(null);
+        txtStatus.setText("");
         cmbDuration.setValue(null);
         cmbProgram.setValue(null);
         datePicker.setValue(null);
@@ -159,7 +160,7 @@ public class TherapySessionPageController {
             LocalDate date = datePicker.getValue();
             String selectedTime = timeComboBox.getValue();
             String duration = cmbDuration.getValue();
-            String status = cmbStatus.getValue();
+            String status = txtStatus.getText();
 
             if (sessionId.isEmpty() || patientId.isEmpty() || therapistId == null || program == null ||
                     patientName.isEmpty() || date == null || selectedTime == null || duration == null || status == null) {
@@ -192,28 +193,61 @@ public class TherapySessionPageController {
         try {
             String therapistId = cmbTherapist.getValue();
             LocalDate date = datePicker.getValue();
-            String timeStr = timeComboBox.getValue();
+            String selectedTimeStr = timeComboBox.getValue();
+            String durationStr = cmbDuration.getValue();
 
-            if (therapistId == null || date == null || timeStr == null) {
-                cmbStatus.setValue("Fill all fields");
-                cmbStatus.setStyle("-fx-text-fill: orange;");
+            if (therapistId == null || date == null || selectedTimeStr == null || durationStr == null) {
+                new Alert(Alert.AlertType.WARNING, "Please select therapist, date, time, and duration first!").show();
                 return;
             }
 
-            LocalTime time = LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("hh:mm a"));
-            boolean available = THERAPYSESSIONBO.isTherapistAvailable(therapistId, date, time);
+            LocalTime startTime = LocalTime.parse(selectedTimeStr, DateTimeFormatter.ofPattern("hh:mm a"));
 
-            if (available) {
-                cmbStatus.setValue("Available");
-                cmbStatus.setStyle("-fx-text-fill: green;");
-            } else {
-                cmbStatus.setValue("Unavailable");
-                cmbStatus.setStyle("-fx-text-fill: red;");
+            LocalTime endTime;
+            switch (durationStr) {
+                case "15 mins":
+                    endTime = startTime.plusMinutes(15);
+                    break;
+                case "30 mins":
+                    endTime = startTime.plusMinutes(30);
+                    break;
+                case "45 mins":
+                    endTime = startTime.plusMinutes(45);
+                    break;
+                case "1 hour":
+                    endTime = startTime.plusHours(1);
+                    break;
+                case "1 hour 30 mins":
+                    endTime = startTime.plusMinutes(90);
+                    break;
+                case "2 hours":
+                    endTime = startTime.plusHours(2);
+                    break;
+                default:
+                    new Alert(Alert.AlertType.ERROR, "Invalid duration selection!").show();
+                    return;
             }
+
+            boolean isAvailable = THERAPYSESSIONBO.isTherapistAvailable(therapistId, date, startTime, endTime);
+
+            if (isAvailable) {
+                txtStatus.setText("Available");
+                new Alert(Alert.AlertType.INFORMATION,
+                        "Therapist " + therapistId + " is available at the selected date and time!").show();
+
+                btnBook.setDisable(false);
+            } else {
+                txtStatus.setText("Unavailable");
+                new Alert(Alert.AlertType.WARNING,
+                        "Therapist " + therapistId + " is NOT available at the selected date and time. " +
+                                "Please choose a different time or therapist.").show();
+
+                btnBook.setDisable(true);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            cmbStatus.setValue("Error");
-            cmbStatus.setStyle("-fx-text-fill: red;");
+            new Alert(Alert.AlertType.ERROR, "Error checking availability: " + e.getMessage()).show();
         }
     }
 
@@ -254,7 +288,7 @@ public class TherapySessionPageController {
             txtPatientName.setText(selected.getPatientName());
             cmbTherapist.setValue(selected.getTherapistId());
             cmbProgram.setValue(selected.getProgram());
-            cmbStatus.setValue(selected.getStatus());
+            txtStatus.setText(selected.getStatus());
             cmbDuration.setValue(selected.getDuration());
             datePicker.setValue(selected.getSessionDate());
             timeComboBox.setValue(selected.getTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
@@ -303,7 +337,7 @@ public class TherapySessionPageController {
             LocalDate date = datePicker.getValue();
             String selectedTime = timeComboBox.getValue();
             String duration = cmbDuration.getValue();
-            String status = cmbStatus.getValue();
+            String status = txtStatus.getText();
 
             if (sessionId.isEmpty() || patientId.isEmpty() || therapistId == null || program == null ||
                     patientName.isEmpty() || date == null || selectedTime == null || duration == null || status == null) {
@@ -344,7 +378,7 @@ public class TherapySessionPageController {
                     txtPatientName.setText(therapySessionDTO.getPatientName());
                     cmbTherapist.setValue(therapySessionDTO.getTherapistId());
                     cmbProgram.setValue(therapySessionDTO.getProgram());
-                    cmbStatus.setValue(therapySessionDTO.getStatus());
+                    txtStatus.setText(therapySessionDTO.getStatus());
                     cmbDuration.setValue(therapySessionDTO.getDuration());
                     datePicker.setValue(therapySessionDTO.getSessionDate());
                     timeComboBox.setValue(therapySessionDTO.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));

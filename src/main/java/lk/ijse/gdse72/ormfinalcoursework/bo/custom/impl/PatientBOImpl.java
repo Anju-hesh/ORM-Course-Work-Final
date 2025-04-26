@@ -101,6 +101,30 @@ public class PatientBOImpl implements PatientBO {
         return patientDAO.getNextId();
     }
 
+    @Override
+    public ArrayList<PatientDTO> getPatientsByTherapyType(String therapyType) throws Exception {
+        ArrayList<Patient> patients = patientDAO.getPatientsByTherapyType(therapyType);
+        ArrayList<PatientDTO> patientDTOS = new ArrayList<>();
+
+        for (Patient patient : patients) {
+            patientDTOS.add(new PatientDTO(
+                    patient.getId(),
+                    patient.getFirstName(),
+                    patient.getLastName(),
+                    patient.getAge(),
+                    patient.getGender(),
+                    patient.getMedicalHistory(),
+                    patient.getContactNumber(),
+                    patient.getEmail(),
+                    patient.getAddress(),
+                    patient.getBloodGroup(),
+                    patient.getAllergies()
+            ));
+        }
+        return patientDTOS;
+    }
+
+
     // You could add a method to filter patients by therapy type if needed
     /*
     @Override

@@ -57,6 +57,10 @@ public class UserPageController {
     @FXML
     private JFXTextField txtUsername;
 
+    @FXML
+    private JFXTextField txtEmail;
+
+
     private final UserBO USERBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOType.USER);
 
 
@@ -91,6 +95,12 @@ public class UserPageController {
 
         cmbRole.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER) {
+                txtEmail.requestFocus();
+            }
+        });
+
+        txtEmail.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
                 btnUpdate.fire();
             }
         });
@@ -115,6 +125,8 @@ public class UserPageController {
         txtUserId.setText(nextuserID);
         txtUsername.setText("");
         cmbRole.setValue(null);
+        txtEmail.setText("");
+
     }
 
     public void loadTableData() throws Exception {
@@ -126,7 +138,8 @@ public class UserPageController {
                     userDto.getUserId(),
                     userDto.getUserName(),
                     userDto.getPassword(),
-                    userDto.getRole()
+                    userDto.getRole(),
+                    userDto.getEmail()
             );
             userTMS.add(userTM);
         }
@@ -206,13 +219,15 @@ public class UserPageController {
 
                 txtUsername.setText(userDto.getUserName());
                 cmbRole.setValue(userDto.getRole());
+                txtEmail.setText(userDto.getEmail());
 
                 ObservableList<UserTM> userTMS = FXCollections.observableArrayList();
                 userTMS.add(new UserTM(
                         userDto.getUserId(),
                         userDto.getUserName(),
                         userDto.getPassword(),
-                        userDto.getRole()
+                        userDto.getRole(),
+                        userDto.getEmail()
                 ));
                 tblUsers.setItems(userTMS);
             }
@@ -226,6 +241,7 @@ public class UserPageController {
         String userId = txtUserId.getText();
         String userName = txtUsername.getText();
         String role = cmbRole.getValue();
+        String email = txtEmail.getText();
 
         if (!userId.isEmpty() && !userName.isEmpty() && !role.isEmpty()) {
 
@@ -250,7 +266,7 @@ public class UserPageController {
                     try {
                         boolean confirm = USERBO.confirmation(userIdUp,userpassword);
                         if (confirm) {
-                            UserDTO userDto = new UserDTO(userId, userName, userpassword ,role);
+                            UserDTO userDto = new UserDTO(userId, userName, userpassword ,role , email);
                             boolean isUpdated = USERBO.updateUser(userDto);
                             if (isUpdated) {
                                 new Alert(Alert.AlertType.INFORMATION, "User Update Successfully!").show();
@@ -292,6 +308,7 @@ public class UserPageController {
             txtUserId.setText(selectedUser.getUserId());
             txtUsername.setText(selectedUser.getUserName());
             cmbRole.setValue(selectedUser.getRole());
+            txtEmail.setText(selectedUser.getEmail());
         }
     }
 }

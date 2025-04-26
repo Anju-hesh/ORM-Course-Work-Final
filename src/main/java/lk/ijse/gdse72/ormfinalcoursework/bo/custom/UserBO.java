@@ -19,4 +19,8 @@ public interface UserBO extends SuperBO {
     ArrayList<UserDTO> getAllUser() throws Exception;
     String getNextuserId() throws SQLException, ClassNotFoundException;
 
+    String[] getDetails(String text) throws SQLException ;
+    String getId(String text) throws SQLException ;
+    boolean updateDetails(String password, String id) throws SQLException ;
+
 }

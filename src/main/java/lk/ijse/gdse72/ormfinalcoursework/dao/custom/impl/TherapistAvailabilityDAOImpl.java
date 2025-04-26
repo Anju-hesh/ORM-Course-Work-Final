@@ -11,6 +11,7 @@ import org.hibernate.query.Query;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -160,5 +161,50 @@ public class TherapistAvailabilityDAOImpl implements TherapistAvailabilityDAO {
     }
 
 
+
+
+    @Override
+    public boolean isTherapistAvailable(String therapistName, LocalDate date, LocalTime startTime, LocalTime endTime) throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+
+        try {
+            // First check if the therapist has any availability on that date
+            String availabilityHql = "FROM TherapistAvailability " +
+                    "WHERE therapistName = :name " +
+                    "AND availableDate = :date " +
+                    "AND startTime <= :requestedStart " +
+                    "AND endTime >= :requestedEnd";
+
+            Query<TherapistAvailability> availabilityQuery = session.createQuery(availabilityHql, TherapistAvailability.class);
+            availabilityQuery.setParameter("name", therapistName);
+            availabilityQuery.setParameter("date", date);
+            availabilityQuery.setParameter("requestedStart", startTime);
+            availabilityQuery.setParameter("requestedEnd", endTime);
+
+            List<TherapistAvailability> availabilities = availabilityQuery.getResultList();
+
+            // If no availabilities include the requested time slot, the therapist is not available
+            if (availabilities.isEmpty()) {
+                return false;
+            }
+
+            // Now check if the therapist has any appointments during this time
+            // This part assumes you have a method to check for existing appointments
+            // You would need to implement this based on your appointment entity
+            // For example:
+            // boolean hasConflictingAppointments = appointmentDAO.hasConflictingAppointments(therapistName, date, startTime, endTime);
+            // return !hasConflictingAppointments;
+
+            // For now, we'll just check availability
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }
 

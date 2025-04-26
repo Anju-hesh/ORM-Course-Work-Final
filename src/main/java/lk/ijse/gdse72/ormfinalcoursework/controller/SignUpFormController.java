@@ -48,6 +48,9 @@ public class SignUpFormController {
     private JFXPasswordField txtPassword;
 
     @FXML
+    private JFXTextField txtEmail;
+
+    @FXML
     private JFXTextField txtUserId;
 
     @FXML
@@ -106,6 +109,12 @@ public class SignUpFormController {
 
         cmbRole.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER) {
+                txtEmail.requestFocus();
+            }
+        });
+
+        txtEmail.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
                 btnSignUp.fire();
             }
         });
@@ -119,8 +128,9 @@ public class SignUpFormController {
             String password = txtPassword.getText();
             String confirmPassword = txtConfirmPassword.getText();
             String role = cmbRole.getValue();
+            String email = txtEmail.getText();
 
-            if (id.isEmpty() || username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || role == null) {
+            if (id.isEmpty() && username.isEmpty() && password.isEmpty() && confirmPassword.isEmpty() && role == null && email == null) {
                 showAlert("Fill all fields!", Alert.AlertType.ERROR);
                 return;
             }
@@ -130,7 +140,7 @@ public class SignUpFormController {
                 return;
             }
 
-            UserDTO userDTO = new UserDTO(id, username, password, role);
+            UserDTO userDTO = new UserDTO(id, username, password, role , email);
             boolean isSaved = userBO.saveUser(userDTO);
 
             if (isSaved) {
@@ -156,6 +166,7 @@ public class SignUpFormController {
         txtPassword.clear();
         txtConfirmPassword.clear();
         cmbRole.setValue(null);
+        txtEmail.clear();
     }
 
     @FXML

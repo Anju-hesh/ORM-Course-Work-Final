@@ -17,9 +17,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.gdse72.ormfinalcoursework.bo.BOFactory;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapistBO;
+import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapyProgramDAO;
+import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapySessionDAO;
+import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.TherapyProgramDAOImpl;
+import lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl.TherapySessionDAOImpl;
 import lk.ijse.gdse72.ormfinalcoursework.dto.TherapistDTO;
 import lk.ijse.gdse72.ormfinalcoursework.dto.tm.TherapistTM;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -192,7 +197,7 @@ public class TherapistPageController {
 
     }
 
-    public void populateComboBoxes() {
+    public void populateComboBoxes() throws SQLException {
         ObservableList<String> availability = FXCollections.observableArrayList(
                 "Available",
                 "Unavailable",
@@ -208,6 +213,13 @@ public class TherapistPageController {
         );
 
         cmbPrograms.setItems(programes);
+//
+//        TherapyProgramDAO therapyProgramDAO = new TherapyProgramDAOImpl();
+//
+//        ArrayList<String> programId = therapyProgramDAO.getPrograms();
+//        ObservableList<String> observableList = FXCollections.observableArrayList();
+//        observableList.addAll(programId);
+//        cmbPrograms.setItems(observableList);
 
         ObservableList<String> specialization = FXCollections.observableArrayList(
                 "Child Psychology",
@@ -297,7 +309,7 @@ public class TherapistPageController {
                 new Alert(Alert.AlertType.WARNING, "Please fill all the fields with valid data!").show();
             }
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter valid numeric values for Age and Contact Number!").show();
+            new Alert(Alert.AlertType.ERROR, "Please enter valid numeric values ").show();
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }

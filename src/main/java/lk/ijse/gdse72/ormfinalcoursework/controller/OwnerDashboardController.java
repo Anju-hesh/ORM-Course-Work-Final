@@ -3,14 +3,20 @@ package lk.ijse.gdse72.ormfinalcoursework.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import lk.ijse.gdse72.ormfinalcoursework.entity.User;
+import lk.ijse.gdse72.ormfinalcoursework.servise.EnteredUserId;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class OwnerDashboardController {
+public class OwnerDashboardController implements Initializable {
 
     @FXML
     private Button btnBackToLoginn;
@@ -42,6 +48,14 @@ public class OwnerDashboardController {
     @FXML
     private AnchorPane mainAnchorPane;
 
+    @FXML
+    private Label lblPassword;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        lblPassword.setText(EnteredUserId.getLoggedInUserId());
+    }
 
     @FXML
     void backToLoginOnAction(ActionEvent event) {
