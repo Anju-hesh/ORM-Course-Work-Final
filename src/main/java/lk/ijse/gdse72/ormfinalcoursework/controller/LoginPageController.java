@@ -114,7 +114,6 @@ public class LoginPageController {
         EnteredUserId.setLoggedInUserId(password);
         System.out.println("Logged in User ID: " + EnteredUserId.getLoggedInUserId());
 
-
         showValidation = true;
 
         boolean validUsername = username.matches("^[a-zA-Z0-9._-]{3,}$");

@@ -285,7 +285,7 @@ public class PatientDAOImpl implements PatientDAO {
     public List<Patient> getAll() throws Exception {
         try (Session session = FactoryConfiguration.getInstance().getSession()) {
             Query<Patient> query = session.createQuery("FROM Patient", Patient.class);
-            query.setCacheable(true); // Enables query cache
+            query.setCacheable(true);
             return query.list();
         } catch (Exception e) {
             throw new RuntimeException("Failed to retrieve all patients", e);

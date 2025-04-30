@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class Therapist {
 
     @Id
@@ -46,7 +47,7 @@ public class Therapist {
 //    private List<TherapyProgram> assignedPrograms = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "therapist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "therapist", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TherapySession> therapySessions = new ArrayList<>();
 
     @OneToMany(mappedBy = "therapist", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -138,6 +138,8 @@ public class SignUpFormController {
             if (!password.equals(confirmPassword)) {
                 showAlert("Passwords do not match!", Alert.AlertType.WARNING);
                 return;
+            } else if (password.length() >= 4) {
+                showAlert(password + " Should >= 4 digit", Alert.AlertType.WARNING);
             }
 
             UserDTO userDTO = new UserDTO(id, username, password, role , email);

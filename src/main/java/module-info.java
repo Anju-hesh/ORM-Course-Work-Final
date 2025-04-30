@@ -15,6 +15,7 @@ module lk.ijse.gdse72.ormfinalcoursework {
     requires jbcrypt;
     requires java.management;
     requires java.mail;
+    requires net.sf.jasperreports.core;
 
     opens lk.ijse.gdse72.ormfinalcoursework.config to jakarta.persistence;
     opens lk.ijse.gdse72.ormfinalcoursework.entity to org.hibernate.orm.core;

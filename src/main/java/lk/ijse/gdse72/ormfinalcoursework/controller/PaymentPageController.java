@@ -25,14 +25,14 @@ import lk.ijse.gdse72.ormfinalcoursework.dto.tm.PatientTM;
 import lk.ijse.gdse72.ormfinalcoursework.dto.tm.PaymentTM;
 import lk.ijse.gdse72.ormfinalcoursework.dto.tm.TherapistTM;
 import lk.ijse.gdse72.ormfinalcoursework.entity.Payment;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PaymentPageController {
 
@@ -223,7 +223,46 @@ public class PaymentPageController {
 
     @FXML
     void generateInvoiceOnAction(ActionEvent event) {
+        String selectedCustomerId = txtPaymentId.getText();
 
+        // Example of a SQL join query used in the Jasper report (for reference):
+        // SELECT c.name, c.email, c.phone, o.order_id, o.order_date, i.item_id, i.name AS item_name,
+        //        od.quantity, od.price, (od.quantity * od.price) AS total
+        // FROM customer c
+        // JOIN orders o ON c.customer_id = o.customer_id
+        // JOIN orderdetails od ON o.order_id = od.order_id
+        // JOIN item i ON od.item_id = i.item_id
+        // WHERE c.customer_id = $P{P_Customer_Id}
+
+        try {
+//            Connection connection = DBConnection.getInstance().getConnection();
+
+            // Initialize a map to hold the report parameters
+            // This map allows passing dynamic values (like customer ID) to the report
+            Map<String, Object> parameters = new HashMap<>();
+
+            // Put the selected customer ID into the map with the key "P_Customer_Id"
+            // The key will be referenced in the JRXML report to filter results based on this customer
+            parameters.put("P_Customer_Id", selectedCustomerId);
+
+            // Compile the Jasper report from a JRXML file (report template)
+            // The report template is located in the "resources/report" folder of the project
+            JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reports/Blank_A4_4.jrxml"));
+
+            // Fill the report with the compiled report object, parameters, and a database connection
+            // This prepares the report with real data from the database based on the selected customer
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    jasperReport,
+                    parameters
+//                    connection
+            );
+
+            // Display the report in a viewer (this is a built-in JasperReports viewer)
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException e) {
+            new Alert(Alert.AlertType.ERROR, "Fail to load report..!");
+            e.printStackTrace();
+        }
     }
 
     @FXML

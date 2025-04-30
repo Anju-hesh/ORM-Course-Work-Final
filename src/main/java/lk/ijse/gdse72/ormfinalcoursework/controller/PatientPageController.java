@@ -25,6 +25,7 @@ import lk.ijse.gdse72.ormfinalcoursework.dto.tm.PatientTM;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class PatientPageController {
 
@@ -114,6 +115,19 @@ public class PatientPageController {
 
     private final PatientBO PATIENTBO = (PatientBO) BOFactory.getInstance().getBO(BOFactory.BOType.PATIENT);
 
+    // Regex patterns for validation
+    private final Pattern ID_PATTERN = Pattern.compile("^PAT\\d{3}$");
+    private final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z]{3,}$");
+    private final Pattern AGE_PATTERN = Pattern.compile("^(?:1[0-9]|[1-9]|[1-9][0-9]|100)$");
+    private final Pattern CONTACT_PATTERN = Pattern.compile("^0[1-9][0-9]{8}$");
+    private final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private final Pattern ADDRESS_PATTERN = Pattern.compile("^[A-Za-z0-9/,\\s]{5,}$");
+    private final Pattern ALLERGIES_PATTERN = Pattern.compile("^[A-Za-z,\\s]{3,}$");
+
+    // CSS styles
+    private final String ERROR_STYLE = "-fx-border-color: red; -fx-border-width: 2px;";
+    private final String DEFAULT_STYLE = "";
+
     public void initialize() {
         try {
             populateComboBoxes();
@@ -131,7 +145,6 @@ public class PatientPageController {
     }
 
     public void changeFocus() {
-
         txtPatientId.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER) {
                 txtFirstName.requestFocus();
@@ -211,8 +224,8 @@ public class PatientPageController {
         cmbGender.setItems(genders);
 
         ObservableList<String> therapyTypes = FXCollections.observableArrayList(
-                "All",   "Cognitive Behavioral Therapy", "Mindfulness-Based Stress Reduction" ,
-                "Dialectical Behavior Therapy" , "Group Therapy Sessions" , "Family Counseling"
+                "All", "Cognitive Behavioral Therapy", "Mindfulness-Based Stress Reduction",
+                "Dialectical Behavior Therapy", "Group Therapy Sessions", "Family Counseling"
         );
         cmbFilterTherapy.setItems(therapyTypes);
         cmbFilterTherapy.setValue("All");
@@ -235,13 +248,13 @@ public class PatientPageController {
         try {
             refrashPage();
             loadTableData();
+            resetFieldStyles();
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
     public void refrashPage() throws Exception {
-
         String nextPatientId = PATIENTBO.getNextPatientId();
         txtPatientId.setText(nextPatientId);
         txtFirstName.setText("");
@@ -254,6 +267,7 @@ public class PatientPageController {
         txtAddress.setText("");
         cmbBloodGroup.setValue(null);
         txtAllergies.setText("");
+        resetFieldStyles();
     }
 
     public void loadTableData() throws Exception {
@@ -305,19 +319,13 @@ public class PatientPageController {
                     boolean isDeleted = PATIENTBO.deletePatient(selectedPatient.getPatientId());
 
                     if (isDeleted) {
-                        new Alert(Alert.AlertType.INFORMATION, "Patient deleted successfully!").show();
                         loadTableData();
                         refrashPage();
-                    } else {
-                        new Alert(Alert.AlertType.ERROR, "Failed to delete the patient!").show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    new Alert(Alert.AlertType.ERROR, "Database error: " + e.getMessage()).show();
                 }
             }
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Please select a patient to delete.").show();
         }
     }
 
@@ -329,7 +337,6 @@ public class PatientPageController {
             if (therapyType == null || therapyType.equals("All")) {
                 loadTableData();
             } else {
-
                 ArrayList<PatientDTO> filteredPatients = PATIENTBO.getPatientsByTherapyType(therapyType);
 
                 ObservableList<PatientTM> patientTMS = FXCollections.observableArrayList();
@@ -352,14 +359,17 @@ public class PatientPageController {
                 tblPatients.setItems(patientTMS);
             }
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, "Error filtering data: " + e.getMessage()).show();
+            e.printStackTrace();
         }
     }
-
 
     @FXML
     void saveOnAction(ActionEvent event) {
         try {
+            if (!validateFields()) {
+                return;
+            }
+
             String patientId = txtPatientId.getText();
             String firstName = txtFirstName.getText();
             String lastName = txtLastName.getText();
@@ -372,29 +382,101 @@ public class PatientPageController {
             String BloodGroup = cmbBloodGroup.getValue();
             String allergies = txtAllergies.getText();
 
-            if (!patientId.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() && gender != null
-                    && !medicalHistory.isEmpty() && !eMail.isEmpty() && !address.isEmpty()
-                    && BloodGroup != null && !allergies.isEmpty() && contact > 0 && age > 0) {
+            PatientDTO patientDTO = new PatientDTO(patientId, firstName, lastName, age, gender, medicalHistory,
+                    contact, eMail, address, BloodGroup, allergies);
 
-                PatientDTO patientDTO = new PatientDTO(patientId, firstName, lastName, age, gender, medicalHistory,
-                        contact, eMail, address, BloodGroup, allergies);
-
-                boolean isSaved = PATIENTBO.savePatient(patientDTO);
-                if (isSaved) {
-                    new Alert(Alert.AlertType.INFORMATION, "Patient Saved Successfully!").show();
-                    loadTableData();
-                    refrashPage();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Failed to Save Patient!").show();
-                }
-            } else {
-                new Alert(Alert.AlertType.WARNING, "Please fill all the fields with valid data!").show();
+            boolean isSaved = PATIENTBO.savePatient(patientDTO);
+            if (isSaved) {
+                loadTableData();
+                refrashPage();
             }
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter valid numeric values for Age and Contact Number!").show();
+            txtAge.setStyle(ERROR_STYLE);
+            txtContact.setStyle(ERROR_STYLE);
+            txtAge.requestFocus();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            e.printStackTrace();
         }
+    }
+
+    private boolean validateFields() {
+        boolean isValid = true;
+        resetFieldStyles();
+
+        if (!ID_PATTERN.matcher(txtPatientId.getText()).matches()) {
+            txtPatientId.setStyle(ERROR_STYLE);
+            if (isValid) txtPatientId.requestFocus();
+            isValid = false;
+        }
+
+        if (!NAME_PATTERN.matcher(txtFirstName.getText()).matches()) {
+            txtFirstName.setStyle(ERROR_STYLE);
+            if (isValid) txtFirstName.requestFocus();
+            isValid = false;
+        }
+
+        if (!NAME_PATTERN.matcher(txtLastName.getText()).matches()) {
+            txtLastName.setStyle(ERROR_STYLE);
+            if (isValid) txtLastName.requestFocus();
+            isValid = false;
+        }
+
+        if (!AGE_PATTERN.matcher(txtAge.getText()).matches()) {
+            txtAge.setStyle(ERROR_STYLE);
+            if (isValid) txtAge.requestFocus();
+            isValid = false;
+        }
+
+        if (cmbGender.getValue() == null) {
+            cmbGender.setStyle(ERROR_STYLE);
+            if (isValid) cmbGender.requestFocus();
+            isValid = false;
+        }
+
+        if (!CONTACT_PATTERN.matcher(txtContact.getText()).matches()) {
+            txtContact.setStyle(ERROR_STYLE);
+            if (isValid) txtContact.requestFocus();
+            isValid = false;
+        }
+
+        if (!EMAIL_PATTERN.matcher(txtEmail.getText()).matches()) {
+            txtEmail.setStyle(ERROR_STYLE);
+            if (isValid) txtEmail.requestFocus();
+            isValid = false;
+        }
+
+        if (!ADDRESS_PATTERN.matcher(txtAddress.getText()).matches()) {
+            txtAddress.setStyle(ERROR_STYLE);
+            if (isValid) txtAddress.requestFocus();
+            isValid = false;
+        }
+
+        if (cmbBloodGroup.getValue() == null) {
+            cmbBloodGroup.setStyle(ERROR_STYLE);
+            if (isValid) cmbBloodGroup.requestFocus();
+            isValid = false;
+        }
+
+        if (!ALLERGIES_PATTERN.matcher(txtAllergies.getText()).matches()) {
+            txtAllergies.setStyle(ERROR_STYLE);
+            if (isValid) txtAllergies.requestFocus();
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void resetFieldStyles() {
+        txtPatientId.setStyle(DEFAULT_STYLE);
+        txtFirstName.setStyle(DEFAULT_STYLE);
+        txtLastName.setStyle(DEFAULT_STYLE);
+        txtAge.setStyle(DEFAULT_STYLE);
+        cmbGender.setStyle(DEFAULT_STYLE);
+        txtContact.setStyle(DEFAULT_STYLE);
+        txtEmail.setStyle(DEFAULT_STYLE);
+        txtAddress.setStyle(DEFAULT_STYLE);
+        cmbBloodGroup.setStyle(DEFAULT_STYLE);
+        txtAllergies.setStyle(DEFAULT_STYLE);
     }
 
     @FXML
@@ -413,6 +495,7 @@ public class PatientPageController {
             txtAddress.setText(selectedPatient.getAddress());
             cmbBloodGroup.setValue(selectedPatient.getBloodGroup());
             txtAllergies.setText(selectedPatient.getAllergies());
+            resetFieldStyles();
         }
     }
 
@@ -422,7 +505,12 @@ public class PatientPageController {
             String patientId = txtPatientId.getText();
 
             if (patientId.isEmpty()) {
-                new Alert(Alert.AlertType.WARNING, "Please select a patient to update!").show();
+                txtPatientId.setStyle(ERROR_STYLE);
+                txtPatientId.requestFocus();
+                return;
+            }
+
+            if (!validateFields()) {
                 return;
             }
 
@@ -437,28 +525,20 @@ public class PatientPageController {
             String BloodGroup = cmbBloodGroup.getValue();
             String allergies = txtAllergies.getText();
 
-            if (!firstName.isEmpty() && !lastName.isEmpty() && gender != null
-                    && !medicalHistory.isEmpty() && !eMail.isEmpty() && !address.isEmpty()
-                    && BloodGroup != null && !allergies.isEmpty() && contact > 0 && age > 0) {
+            PatientDTO patientDTO = new PatientDTO(patientId, firstName, lastName, age, gender, medicalHistory,
+                    contact, eMail, address, BloodGroup, allergies);
 
-                PatientDTO patientDTO = new PatientDTO(patientId, firstName, lastName, age, gender, medicalHistory,
-                        contact, eMail, address, BloodGroup, allergies);
-
-                boolean isUpdated = PATIENTBO.updatePatient(patientDTO);
-                if (isUpdated) {
-                    new Alert(Alert.AlertType.INFORMATION, "Patient Updated Successfully!").show();
-                    loadTableData();
-                    refrashPage();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Failed to Update Patient!").show();
-                }
-            } else {
-                new Alert(Alert.AlertType.WARNING, "Please fill all the fields with valid data!").show();
+            boolean isUpdated = PATIENTBO.updatePatient(patientDTO);
+            if (isUpdated) {
+                loadTableData();
+                refrashPage();
             }
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Please enter valid numeric values for Age and Contact Number!").show();
+            txtAge.setStyle(ERROR_STYLE);
+            txtContact.setStyle(ERROR_STYLE);
+            txtAge.requestFocus();
         } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            e.printStackTrace();
         }
     }
 
@@ -468,7 +548,7 @@ public class PatientPageController {
             subAnchor.getChildren().clear();
             subAnchor.getChildren().add(FXMLLoader.load(getClass().getResource("/view/TherapistPage.fxml")));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -491,10 +571,10 @@ public class PatientPageController {
                     txtAddress.setText(patientDTO.getAddress());
                     cmbBloodGroup.setValue(patientDTO.getBloodGroup());
                     txtAllergies.setText(patientDTO.getAllergies());
+                    resetFieldStyles();
 
                     ObservableList<PatientTM> patientTMS = FXCollections.observableArrayList();
-
-                    PatientTM patientTM = new PatientTM(
+                    patientTMS.add(new PatientTM(
                             patientDTO.getPatientId(),
                             patientDTO.getFirstName(),
                             patientDTO.getLastName(),
@@ -506,18 +586,12 @@ public class PatientPageController {
                             patientDTO.getAddress(),
                             patientDTO.getBloodGroup(),
                             patientDTO.getAllergies()
-                    );
-                    patientTMS.add(patientTM);
+                    ));
                     tblPatients.setItems(patientTMS);
-                } else {
-                    new Alert(Alert.AlertType.WARNING, "Patient Not Found!").show();
                 }
             } catch (Exception e) {
-//                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "An error occurred while searching!").show();
+                e.printStackTrace();
             }
-        } else {
-            new Alert(Alert.AlertType.WARNING, "Please enter a Patient ID to search!").show();
         }
     }
 
