@@ -3,6 +3,7 @@ package lk.ijse.gdse72.ormfinalcoursework.bo.custom.impl;
 import lk.ijse.gdse72.ormfinalcoursework.bo.custom.TherapistAvailabilityBO;
 import lk.ijse.gdse72.ormfinalcoursework.dao.DAOFactory;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapistAvailabilityDAO;
+import lk.ijse.gdse72.ormfinalcoursework.dto.AvailabilityChartChart;
 import lk.ijse.gdse72.ormfinalcoursework.dto.TherapistAvailabilityDTO;
 import lk.ijse.gdse72.ormfinalcoursework.entity.TherapistAvailability;
 
@@ -73,5 +74,11 @@ public class TherapistAvailabilityBOImpl implements TherapistAvailabilityBO {
         }
         return dtoList;
     }
+
+    @Override
+    public List<AvailabilityChartChart> getAllAvailabilitySummary() throws Exception {
+        return therapistAvailabilityDAO.getAllAvailabilitySummary();
+    }
+
 
 }

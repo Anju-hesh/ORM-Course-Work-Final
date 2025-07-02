@@ -124,6 +124,11 @@ public class PatientBOImpl implements PatientBO {
         return patientDTOS;
     }
 
+    @Override
+    public int countByGender(String gender) throws Exception {
+        return patientDAO.countByGender(gender);
+    }
+
 
     // You could add a method to filter patients by therapy type if needed
     /*

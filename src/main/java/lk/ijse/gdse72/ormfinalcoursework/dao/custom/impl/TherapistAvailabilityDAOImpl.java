@@ -2,6 +2,7 @@ package lk.ijse.gdse72.ormfinalcoursework.dao.custom.impl;
 
 import lk.ijse.gdse72.ormfinalcoursework.config.FactoryConfiguration;
 import lk.ijse.gdse72.ormfinalcoursework.dao.custom.TherapistAvailabilityDAO;
+import lk.ijse.gdse72.ormfinalcoursework.dto.AvailabilityChartChart;
 import lk.ijse.gdse72.ormfinalcoursework.dto.TherapistAvailabilityDTO;
 import lk.ijse.gdse72.ormfinalcoursework.entity.Therapist;
 import lk.ijse.gdse72.ormfinalcoursework.entity.TherapistAvailability;
@@ -222,6 +223,26 @@ public class TherapistAvailabilityDAOImpl implements TherapistAvailabilityDAO {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public List<AvailabilityChartChart> getAllAvailabilitySummary() throws Exception {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            String hql = "SELECT TherapistAvailabilityDTO(" +
+                    "t.therapist.name, COUNT(t)) " +
+                    "FROM TherapistAvailability t GROUP BY t.therapist.name";
+
+            List<AvailabilityChartChart> list = session.createQuery(hql, AvailabilityChartChart.class).list();
+
+            transaction.commit();
+            return list.stream()
+                    .map(dto -> new AvailabilityChartChart(dto.getTherapistName(), dto.getAvailableSlotCount()))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching therapist availability summary", e);
         }
     }
 }

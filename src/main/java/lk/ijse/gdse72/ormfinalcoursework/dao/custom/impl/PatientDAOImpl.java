@@ -173,4 +173,19 @@ public class PatientDAOImpl implements PatientDAO {
             throw new RuntimeException("Failed to count patients", e);
         }
     }
+
+    @Override
+    public int countByGender(String gender) throws Exception {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            String hql = "SELECT COUNT(p) FROM Patient p WHERE p.gender = :gender";
+            Query<Long> query = session.createQuery(hql, Long.class);
+            query.setParameter("gender", gender);
+            Long count = query.uniqueResult();
+
+            transaction.commit();
+            return count.intValue();
+        }
+    }
 }

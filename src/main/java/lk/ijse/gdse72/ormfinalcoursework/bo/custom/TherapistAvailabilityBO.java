@@ -1,6 +1,7 @@
 package lk.ijse.gdse72.ormfinalcoursework.bo.custom;
 
 import lk.ijse.gdse72.ormfinalcoursework.bo.SuperBO;
+import lk.ijse.gdse72.ormfinalcoursework.dto.AvailabilityChartChart;
 import lk.ijse.gdse72.ormfinalcoursework.dto.TherapistAvailabilityDTO;
 
 import java.sql.SQLException;
@@ -13,4 +14,6 @@ public interface TherapistAvailabilityBO extends SuperBO {
     boolean deleteAvailability(String id) throws Exception;
     ArrayList<TherapistAvailabilityDTO> getAllavailabilities() throws Exception;
     List<TherapistAvailabilityDTO> searchAvailability(String therapist) throws Exception;
+
+    List<AvailabilityChartChart> getAllAvailabilitySummary() throws Exception;
 }
