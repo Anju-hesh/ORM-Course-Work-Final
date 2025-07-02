@@ -230,4 +230,17 @@ public class UserDAOImpl implements UserDAO {
 
         return isUpdated;
     }
+
+    @Override
+    public int countAll() throws Exception {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            String hql = "SELECT COUNT(u) FROM User u";
+            Query<Long> query = session.createQuery(hql, Long.class);
+            Long count = query.uniqueResult();
+            return count != null ? count.intValue() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to count users", e);
+        }
+    }
 }

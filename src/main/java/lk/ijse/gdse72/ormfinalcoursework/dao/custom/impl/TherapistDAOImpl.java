@@ -159,4 +159,14 @@ public class TherapistDAOImpl implements TherapistDAO {
     public void setSession(Session session) throws Exception {
 
     }
+
+    @Override
+    public int countAll() throws Exception {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            Long count = (Long) session.createQuery("SELECT COUNT(t) FROM Therapist t").uniqueResult();
+            return count != null ? count.intValue() : 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to count therapists", e);
+        }
+    }
 }

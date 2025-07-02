@@ -206,5 +206,23 @@ public class TherapistAvailabilityDAOImpl implements TherapistAvailabilityDAO {
             }
         }
     }
+
+    @Override
+    public int countAll() throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            String hql = "SELECT COUNT(*) FROM TherapistAvailability";
+            Query<Long> query = session.createQuery(hql, Long.class);
+            Long count = query.uniqueResult();
+            return count != null ? count.intValue() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }
 

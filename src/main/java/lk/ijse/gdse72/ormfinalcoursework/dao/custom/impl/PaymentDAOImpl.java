@@ -134,4 +134,14 @@ public class PaymentDAOImpl implements PaymentDAO {
     public void setSession(Session session) throws Exception {
 
     }
+
+    @Override
+    public int countAll() throws Exception {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            Long count = (Long) session.createQuery("SELECT COUNT(p) FROM Payment p").uniqueResult();
+            return count != null ? count.intValue() : 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to count payments", e);
+        }
+    }
 }

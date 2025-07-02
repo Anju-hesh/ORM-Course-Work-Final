@@ -231,4 +231,19 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
 
     }
 
+    @Override
+    public int countAll() throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            Long count = (Long) session.createQuery("SELECT COUNT(*) FROM TherapySession").uniqueResult();
+            return count != null ? count.intValue() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }

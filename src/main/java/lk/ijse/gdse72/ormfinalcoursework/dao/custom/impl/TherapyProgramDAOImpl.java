@@ -157,4 +157,14 @@ public class TherapyProgramDAOImpl implements TherapyProgramDAO {
     public void setSession(Session session) throws Exception {
 
     }
+
+    @Override
+    public int countAll() throws Exception {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            Long count = (Long) session.createQuery("SELECT COUNT(tp) FROM TherapyProgram tp").uniqueResult();
+            return count != null ? count.intValue() : 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to count therapy programs", e);
+        }
+    }
 }
